@@ -86,8 +86,8 @@ teamcity {
 
 githubRelease {
     token = System.getenv('TEAMCITY_PLUGIN_GIT_TOKEN') ?: ''
-    owner = 'etiennestuder'
-    repo = 'teamcity-build-scan-plugin'
+    owner = 'gradle'
+    repo = 'develocity-teamcity-plugin'
     targetCommitish = 'main'
     releaseName = gitHubReleaseName()
     tagName = gitReleaseTag()
