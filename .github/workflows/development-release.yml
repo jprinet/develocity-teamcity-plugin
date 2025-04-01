@@ -1,7 +1,11 @@
 name: Create Development Release
 
 on:
-    push:
+    workflow_run:
+        workflows:
+            - "Verify Build"
+        types:
+            - completed
         branches:
             - main
     workflow_dispatch:
@@ -11,6 +15,7 @@ permissions:
 
 jobs:
     development_release:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         name: Release
         runs-on: ubuntu-latest
         steps:
