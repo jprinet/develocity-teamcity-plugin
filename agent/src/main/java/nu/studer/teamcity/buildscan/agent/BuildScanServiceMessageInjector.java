@@ -49,23 +49,23 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
 
     private static final String COMMAND_LINE_RUNNER = "simpleRunner";
 
-    // Gradle TeamCity Build Scan plugin
+    // Develocity TeamCity plugin
 
-    private static final String GRADLE_BUILDSCAN_TEAMCITY_PLUGIN = "GRADLE_BUILDSCAN_TEAMCITY_PLUGIN";
+    private static final String DEVELOCITY_TEAMCITY_PLUGIN = "DEVELOCITY_TEAMCITY_PLUGIN";
 
     // TeamCity Develocity configuration parameters
 
-    private static final String GRADLE_PLUGIN_REPOSITORY_CONFIG_PARAM = "buildScanPlugin.gradle.plugin-repository.url";
-    private static final String DEVELOCITY_URL_CONFIG_PARAM = "buildScanPlugin.gradle-enterprise.url";
-    private static final String DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM = "buildScanPlugin.gradle-enterprise.allow-untrusted-server";
-    private static final String DEVELOCITY_ENFORCE_URL_CONFIG_PARAM = "buildScanPlugin.gradle-enterprise.enforce-url";
-    private static final String DEVELOCITY_PLUGIN_VERSION_CONFIG_PARAM = "buildScanPlugin.gradle-enterprise.plugin.version";
-    private static final String CCUD_PLUGIN_VERSION_CONFIG_PARAM = "buildScanPlugin.ccud.plugin.version";
-    private static final String DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM = "buildScanPlugin.gradle-enterprise.extension.version";
-    private static final String CCUD_EXTENSION_VERSION_CONFIG_PARAM = "buildScanPlugin.ccud.extension.version";
-    private static final String CUSTOM_DEVELOCITY_EXTENSION_COORDINATES_CONFIG_PARAM = "buildScanPlugin.gradle-enterprise.extension.custom.coordinates";
-    private static final String CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM = "buildScanPlugin.ccud.extension.custom.coordinates";
-    private static final String INSTRUMENT_COMMAND_LINE_RUNNER_CONFIG_PARAM = "buildScanPlugin.command-line-build-step.enabled";
+    private static final String GRADLE_PLUGIN_REPOSITORY_CONFIG_PARAM = "develocityPlugin.gradle.plugin-repository.url";
+    private static final String DEVELOCITY_URL_CONFIG_PARAM = "develocityPlugin.develocity.url";
+    private static final String DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM = "develocityPlugin.develocity.allow-untrusted-server";
+    private static final String DEVELOCITY_ENFORCE_URL_CONFIG_PARAM = "develocityPlugin.develocity.enforce-url";
+    private static final String DEVELOCITY_PLUGIN_VERSION_CONFIG_PARAM = "develocityPlugin.develocity.plugin.version";
+    private static final String CCUD_PLUGIN_VERSION_CONFIG_PARAM = "develocityPlugin.ccud.plugin.version";
+    private static final String DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM = "develocityPlugin.develocity.extension.version";
+    private static final String CCUD_EXTENSION_VERSION_CONFIG_PARAM = "develocityPlugin.ccud.extension.version";
+    private static final String CUSTOM_DEVELOCITY_EXTENSION_COORDINATES_CONFIG_PARAM = "develocityPlugin.develocity.extension.custom.coordinates";
+    private static final String CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM = "develocityPlugin.ccud.extension.custom.coordinates";
+    private static final String INSTRUMENT_COMMAND_LINE_RUNNER_CONFIG_PARAM = "develocityPlugin.command-line-build-step.enabled";
 
     // Environment variables set to instrument the Gradle build
 
@@ -132,7 +132,7 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
         String initScriptParam = "--init-script " + initScript.getAbsolutePath();
         addGradleCmdParam(initScriptParam, runner);
 
-        addEnvVar(GRADLE_BUILDSCAN_TEAMCITY_PLUGIN, "1", runner);
+        addEnvVar(DEVELOCITY_TEAMCITY_PLUGIN, "1", runner);
     }
 
     private void instrumentMavenRunner(@NotNull BuildRunnerContext runner) {
@@ -140,7 +140,7 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
         String invocationArgs = getMavenInvocationArgs(runner);
         addMavenCmdParam(invocationArgs, runner);
 
-        addEnvVar(GRADLE_BUILDSCAN_TEAMCITY_PLUGIN, "1", runner);
+        addEnvVar(DEVELOCITY_TEAMCITY_PLUGIN, "1", runner);
     }
 
     private void instrumentCommandLineRunner(@NotNull BuildRunnerContext runner) {
@@ -153,7 +153,7 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
         String invocationArgs = getMavenInvocationArgs(runner);
         appendEnvVar("MAVEN_OPTS", invocationArgs, runner);
 
-        addEnvVar(GRADLE_BUILDSCAN_TEAMCITY_PLUGIN, "1", runner);
+        addEnvVar(DEVELOCITY_TEAMCITY_PLUGIN, "1", runner);
     }
 
     private void addGradleInitScriptEnvVars(@NotNull File initScript, @NotNull BuildRunnerContext runner) {
