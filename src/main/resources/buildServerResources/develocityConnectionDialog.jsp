@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/include-internal.jsp" %>
 
-<jsp:useBean id="keys" class="nu.studer.teamcity.buildscan.connection.DevelocityConnectionConstants"/>
+<jsp:useBean id="keys" class="com.gradle.develocity.teamcity.connection.DevelocityConnectionConstants"/>
 <jsp:useBean id="project" type="jetbrains.buildServer.serverSide.SProject" scope="request"/>
 
 <tr>

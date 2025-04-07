@@ -5,73 +5,73 @@
        default-autowire="constructor">
 
     <bean id="buildScanViewBuildTab"
-          class="nu.studer.teamcity.buildscan.BuildScanViewBuildTab"
+          class="com.gradle.develocity.teamcity.BuildScanViewBuildTab"
           destroy-method="unregister">
     </bean>
 
     <bean id="buildScanBuildServerListener"
-          class="nu.studer.teamcity.buildscan.BuildScanBuildServerListener"
+          class="com.gradle.develocity.teamcity.BuildScanBuildServerListener"
           init-method="register"
           destroy-method="unregister">
     </bean>
 
     <bean id="buildScanCrumbSummaryExtension"
-          class="nu.studer.teamcity.buildscan.BuildScanCrumbSummaryExtension"
+          class="com.gradle.develocity.teamcity.BuildScanCrumbSummaryExtension"
           init-method="register"
           destroy-method="unregister">
     </bean>
 
     <bean id="cachedBuildScanLookup" primary="true"
-          class="nu.studer.teamcity.buildscan.internal.CachedBuildScanLookup"
+          class="com.gradle.develocity.teamcity.internal.CachedBuildScanLookup"
           destroy-method="destroy">
-        <constructor-arg type="nu.studer.teamcity.buildscan.BuildScanLookup" ref="dataStoreBuildScanLookup"/>
+        <constructor-arg type="com.gradle.develocity.teamcity.BuildScanLookup" ref="dataStoreBuildScanLookup"/>
     </bean>
 
     <bean id="dataStoreBuildScanLookup"
-          class="nu.studer.teamcity.buildscan.internal.DataStoreBuildScanLookup">
-        <constructor-arg type="nu.studer.teamcity.buildscan.BuildScanLookup" ref="logIteratingBuildScanLookup"/>
+          class="com.gradle.develocity.teamcity.internal.DataStoreBuildScanLookup">
+        <constructor-arg type="com.gradle.develocity.teamcity.BuildScanLookup" ref="logIteratingBuildScanLookup"/>
     </bean>
 
     <bean id="logIteratingBuildScanLookup"
-          class="nu.studer.teamcity.buildscan.internal.LogIteratingBuildScanLookup"/>
+          class="com.gradle.develocity.teamcity.internal.LogIteratingBuildScanLookup"/>
 
     <bean id="buildScanServiceMessageListener"
-          class="nu.studer.teamcity.buildscan.internal.BuildScanServiceMessageListener"/>
+          class="com.gradle.develocity.teamcity.internal.BuildScanServiceMessageListener"/>
 
     <bean id="artifactBuildScanDataStore"
-          class="nu.studer.teamcity.buildscan.internal.ArtifactBuildScanDataStore"/>
+          class="com.gradle.develocity.teamcity.internal.ArtifactBuildScanDataStore"/>
 
     <bean id="buildScanDisplayArbiter"
-          class="nu.studer.teamcity.buildscan.internal.DefaultBuildScanDisplayArbiter"/>
+          class="com.gradle.develocity.teamcity.internal.DefaultBuildScanDisplayArbiter"/>
 
     <bean id="slackIntegration"
-          class="nu.studer.teamcity.buildscan.internal.slack.SlackIntegration"
+          class="com.gradle.develocity.teamcity.internal.slack.SlackIntegration"
           destroy-method="shutdown"/>
 
     <bean id="buildScanAdminPage"
-          class="nu.studer.teamcity.buildscan.internal.cleanup.BuildScanAdminPage"
+          class="com.gradle.develocity.teamcity.internal.cleanup.BuildScanAdminPage"
           init-method="register"
           destroy-method="unregister">
     </bean>
 
     <bean id="buildScanCleanupController"
-          class="nu.studer.teamcity.buildscan.internal.cleanup.BuildScanCleanupController">
+          class="com.gradle.develocity.teamcity.internal.cleanup.BuildScanCleanupController">
     </bean>
 
     <bean id="customDataStorageBuildScanCleaner"
-          class="nu.studer.teamcity.buildscan.internal.CustomDataStorageBuildScanCleaner">
+          class="com.gradle.develocity.teamcity.internal.CustomDataStorageBuildScanCleaner">
     </bean>
 
     <bean id="develocityConnectionProvider"
-          class="nu.studer.teamcity.buildscan.connection.DevelocityConnectionProvider">
+          class="com.gradle.develocity.teamcity.connection.DevelocityConnectionProvider">
     </bean>
 
     <bean id="develocityParametersProvider"
-          class="nu.studer.teamcity.buildscan.connection.DevelocityParametersProvider">
+          class="com.gradle.develocity.teamcity.connection.DevelocityParametersProvider">
     </bean>
 
     <bean id="develocityPasswordProvider"
-          class="nu.studer.teamcity.buildscan.connection.DevelocityPasswordProvider">
+          class="com.gradle.develocity.teamcity.connection.DevelocityPasswordProvider">
     </bean>
 
 </beans>
