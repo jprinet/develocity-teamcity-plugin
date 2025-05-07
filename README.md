@@ -5,15 +5,13 @@
 develocity-teamcity-plugin
 ==========================
 
-> The work on this software project is in no way associated with my employer nor with the role I'm having at my employer. Any requests for changes will be decided upon exclusively by myself based on my personal preferences. I maintain this project as much or as little as my spare time permits.
-
 # Overview
 
 [TeamCity](https://www.jetbrains.com/teamcity/) plugin that integrates with the Build Scan service and more generally with Develocity for Gradle and Maven builds run via TeamCity. Build scans are available as a free service on [scans.gradle.com](https://scans.gradle.com/) and commercially via [Develocity](https://gradle.com).
 
 For each Gradle and Maven build that is run from TeamCity, this plugin exposes the links to the created build scans in the TeamCity UI. The plugin can also be configured to ad-hoc connect Gradle and Maven builds to an existing Develocity instance such that a Build Scan is published each time a build is run from TeamCity.
 
-The plugin is available from the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/9326-integration-for-gradle-and-maven-build-scans).
+The plugin is available from the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/27005-develocity-integration-for-gradle-and-maven-builds).
 
 ## Build Scan
 
@@ -31,7 +29,7 @@ Find out more about Build Scan for Gradle and Maven at https://scans.gradle.com 
 
 ## Option 2: Manually upload plugin
 
-1. Download the plugin `.zip` file from [https://plugins.jetbrains.com/plugin/9326-integration-for-gradle-and-maven-build-scans](https://plugins.jetbrains.com/plugin/9326-integration-for-gradle-and-maven-build-scans).
+1. Download the plugin `.zip` file from [https://plugins.jetbrains.com/plugin/27005-develocity-integration-for-gradle-and-maven-builds](https://plugins.jetbrains.com/plugin/27005-develocity-integration-for-gradle-and-maven-builds).
 
 2. Go to the plugin list of your TeamCity installation at `<TeamCityInstanceRootUrl>/admin/admin.html?item=plugins` and click on the link _Upload plugin zip_ to install the previously downloaded plugin `.zip` file.
 
