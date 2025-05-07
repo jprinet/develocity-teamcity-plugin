@@ -15,7 +15,7 @@ public class BuildScanBadge {
     static String create(BuildScanReference reference) {
         BadgeFormat badgeFormat = new BadgeFormatBuilder(reference.getUrlWithoutProtocol())
             .withLogo(GRADLE_LOGO)
-            .withLabel("Build Scan®️")
+            .withLabel("Build Scan®")
             .withMessageColor(() -> "#06A0CE")
             .build();
         return BadgeMaker.makeBadge(badgeFormat);
