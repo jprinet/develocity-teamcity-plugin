@@ -77,7 +77,7 @@ A Develocity connection can be created on any project and is automatically inher
 
 <summary>Click for an example configuration.</summary>
 
-<img width="591" alt="develocity-connection-dialog" src="https://user-images.githubusercontent.com/625514/235716524-ef39e577-07d2-4ceb-9dfd-de515aff3d3d.png">
+<img width="591" alt="develocity-connection-dialog" src="https://github.com/user-attachments/assets/e36a77a7-98b8-4ddd-8a19-1fffbafdd80d">
 
 </details>
 
@@ -108,7 +108,7 @@ The TeamCity configuration parameters can be set on any project and are automati
 
 ##### Example Gradle Configuration
 
-<img width="1302" alt="image" src="https://user-images.githubusercontent.com/231070/171748029-590c9f99-9382-41f3-8597-8c049ce328ed.png">
+<img width="1049" alt="image" src="https://github.com/user-attachments/assets/e6bfc90a-7391-4fb5-8536-199e23c40733" />
 
 #### Maven Builds
 
@@ -128,7 +128,7 @@ The TeamCity configuration parameters can be set on any project and are automati
 
 ##### Example Maven Configuration
 
-<img width="1298" alt="image" src="https://user-images.githubusercontent.com/231070/171748453-243aa862-c31b-4367-bb90-49b257de1f3f.png">
+<img width="1037" alt="image" src="https://github.com/user-attachments/assets/0f8c6d81-e990-44c8-934b-72210938d473" />
 
 </details>
 
