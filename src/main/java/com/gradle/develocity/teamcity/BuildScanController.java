@@ -83,7 +83,3 @@ public class BuildScanController extends BaseController {
         return mv;
     }
 }
-
-
-
-
