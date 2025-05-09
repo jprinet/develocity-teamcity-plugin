@@ -9,4 +9,9 @@
             </c:forEach>
         </ul>
     </c:when>
+    <c:otherwise>
+        <c:if test="${hasSupportedRunner}">
+            No Build Scan published.
+        </c:if>
+    </c:otherwise>
 </c:choose>

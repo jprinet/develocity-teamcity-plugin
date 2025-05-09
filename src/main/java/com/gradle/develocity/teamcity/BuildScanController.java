@@ -26,6 +26,7 @@ public class BuildScanController extends BaseController {
     private final BuildsManager buildsManager;
     private final BuildScanLookup buildScanLookup;
     private final SBuildServer buildServer;
+    private final BuildScanDisplayArbiter buildScanDisplayArbiter;
 
     public BuildScanController(
         @NotNull PluginDescriptor descriptor,
@@ -33,13 +34,14 @@ public class BuildScanController extends BaseController {
         @NotNull BuildsManager buildsManager,
         @NotNull WebControllerManager controllerManager,
         @NotNull BuildScanLookup buildScanLookup,
-        @NotNull SBuildServer buildServer
-
+        @NotNull SBuildServer buildServer,
+        @NotNull BuildScanDisplayArbiter buildScanDisplayArbiter
     ) {
         this.descriptor = descriptor;
         this.buildsManager = buildsManager;
         this.buildScanLookup = buildScanLookup;
         this.buildServer = buildServer;
+        this.buildScanDisplayArbiter = buildScanDisplayArbiter;
         String url = "/buildScanLinks.html";
         // For the Sakura UI we register the Plugin using the SAKURA-prefixed PlaceIDs.
         SimplePageExtension buildOverview = new SimplePageExtension(places);
@@ -78,6 +80,7 @@ public class BuildScanController extends BaseController {
 
         if (build != null) {
             BuildScanReferences buildScans = buildScanLookup.getBuildScansForBuild(build);
+            mv.getModel().put("hasSupportedRunner", buildScanDisplayArbiter.hasSupportedRunner(build.getBuildType()));
             mv.getModel().put("buildScans", buildScans);
         }
         return mv;
