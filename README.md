@@ -5,15 +5,13 @@
 develocity-teamcity-plugin
 ==========================
 
-> The work on this software project is in no way associated with my employer nor with the role I'm having at my employer. Any requests for changes will be decided upon exclusively by myself based on my personal preferences. I maintain this project as much or as little as my spare time permits.
-
 # Overview
 
-[TeamCity](https://www.jetbrains.com/teamcity/) plugin that integrates with the Build Scan service and more generally with Develocity for Gradle and Maven builds run via TeamCity. Build scans are available as a free service on [scans.gradle.com](https://scans.gradle.com/) and commercially via [Develocity](https://gradle.com).
+[TeamCity](https://www.jetbrains.com/teamcity/) plugin that integrates with the Build Scan® service and more generally with Develocity for Gradle and Maven builds run via TeamCity. Build scans are available as a free service on [scans.gradle.com](https://scans.gradle.com/) and commercially via [Develocity](https://gradle.com).
 
-For each Gradle and Maven build that is run from TeamCity, this plugin exposes the links to the created build scans in the TeamCity UI. The plugin can also be configured to ad-hoc connect Gradle and Maven builds to an existing Develocity instance such that a Build Scan is published each time a build is run from TeamCity.
+For each Gradle and Maven build that is run from TeamCity, this plugin exposes the links to the created Build Scans in the TeamCity UI. The plugin can also be configured to ad-hoc connect Gradle and Maven builds to an existing Develocity instance such that a Build Scan is published each time a build is run from TeamCity.
 
-The plugin is available from the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/9326-integration-for-gradle-and-maven-build-scans).
+The plugin is available from the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/27005-develocity-integration-for-gradle-and-maven-builds).
 
 ## Build Scan
 
@@ -31,7 +29,7 @@ Find out more about Build Scan for Gradle and Maven at https://scans.gradle.com 
 
 ## Option 2: Manually upload plugin
 
-1. Download the plugin `.zip` file from [https://plugins.jetbrains.com/plugin/9326-integration-for-gradle-and-maven-build-scans](https://plugins.jetbrains.com/plugin/9326-integration-for-gradle-and-maven-build-scans).
+1. Download the plugin `.zip` file from [https://plugins.jetbrains.com/plugin/27005-develocity-integration-for-gradle-and-maven-builds](https://plugins.jetbrains.com/plugin/27005-develocity-integration-for-gradle-and-maven-builds).
 
 2. Go to the plugin list of your TeamCity installation at `<TeamCityInstanceRootUrl>/admin/admin.html?item=plugins` and click on the link _Upload plugin zip_ to install the previously downloaded plugin `.zip` file.
 
@@ -45,17 +43,17 @@ Find out more about Build Scan for Gradle and Maven at https://scans.gradle.com 
 
 If you use TeamCity's _Gradle_ runner to launch your Gradle builds, there is nothing special to do.
 
-If you use TeamCity's _Command Line_ runner to launch your Gradle builds, you can opt in to enable build scan detection using the `develocityPlugin.command-line-build-step.enabled` configuration parameter.
+If you use TeamCity's _Command Line_ runner to launch your Gradle builds, you can opt in to enable Build Scan detection using the `develocityPlugin.command-line-build-step.enabled` configuration parameter.
 
-If the first two mechanisms will not work for your Gradle build configurations, you can still get integration with build scans, but it requires your build logs being parsed for build scan links. In case of huge build logs, this can put a significant toll on the performance of your TeamCity instance. You can enable the parsing of the build logs by setting the `develocityPlugin.log-parsing.enabled` configuration parameter to _true_.
+If the first two mechanisms will not work for your Gradle build configurations, you can still get integration with Build Scans, but it requires your build logs being parsed for Build Scan links. In case of huge build logs, this can put a significant toll on the performance of your TeamCity instance. You can enable the parsing of the build logs by setting the `develocityPlugin.log-parsing.enabled` configuration parameter to _true_.
 
 ### Maven builds
 
 If you use TeamCity's _Maven_ runner to launch Maven builds, there is nothing special to do.
 
-If you use TeamCity's _Command Line_ runner to launch your Maven builds, you can opt in to enable build scan detection using the `develocityPlugin.command-line-build-step.enabled` configuration parameter.
+If you use TeamCity's _Command Line_ runner to launch your Maven builds, you can opt in to enable Build Scan detection using the `develocityPlugin.command-line-build-step.enabled` configuration parameter.
 
-If the first two mechanisms will not work for your Maven build configurations, you can still get integration with build scans, but it requires your build logs being parsed for build scan links. In case of huge build logs, this can put a significant toll on the performance of your TeamCity instance. You can enable the parsing of the build logs by setting the `develocityPlugin.log-parsing.enabled` configuration parameter to _true_.
+If the first two mechanisms will not work for your Maven build configurations, you can still get integration with Build Scans, but it requires your build logs being parsed for Build Scan links. In case of huge build logs, this can put a significant toll on the performance of your TeamCity instance. You can enable the parsing of the build logs by setting the `develocityPlugin.log-parsing.enabled` configuration parameter to _true_.
 
 ## Develocity connectivity
 
@@ -79,7 +77,7 @@ A Develocity connection can be created on any project and is automatically inher
 
 <summary>Click for an example configuration.</summary>
 
-<img width="591" alt="develocity-connection-dialog" src="https://user-images.githubusercontent.com/625514/235716524-ef39e577-07d2-4ceb-9dfd-de515aff3d3d.png">
+<img width="591" alt="develocity-connection-dialog" src="https://github.com/user-attachments/assets/e36a77a7-98b8-4ddd-8a19-1fffbafdd80d">
 
 </details>
 
@@ -97,40 +95,40 @@ The TeamCity configuration parameters can be set on any project and are automati
 
 1. In TeamCity, on the build configuration for which you want to apply Develocity, create three configuration parameters:
 
-   - `develocityPlugin.develocity.url` - the URL of the Develocity instance to which to publish build scans
+   - `develocityPlugin.develocity.url` - the URL of the Develocity instance to which to publish Build Scans
    - `develocityPlugin.develocity.plugin.version` - the version of the [Develocity Gradle plugin](https://docs.gradle.com/develocity/gradle-plugin/) to apply
    - `develocityPlugin.ccud.plugin.version` - the version of the [Common Custom User Data Gradle plugin](https://github.com/gradle/common-custom-user-data-gradle-plugin) to apply (optional)
 
 2. If required, provide additional configuration parameters for your environment (optional):
 
     - `develocityPlugin.develocity.allow-untrusted-server` - allow communication with an untrusted server; set to _true_ if your Develocity instance is using a self-signed certificate
-    - `develocityPlugin.develocity.enforce-url` - enforce the configured Develocity URL over a URL configured in the project's build; set to _true_ to enforce publication of build scans to the configured Develocity URL
-    - `develocityPlugin.gradle.plugin-repository.url` - the URL of the repository to use when resolving the GE and CCUD plugins; required if your TeamCity agents are not able to access the Gradle Plugin Portal
+    - `develocityPlugin.develocity.enforce-url` - enforce the configured Develocity URL over a URL configured in the project's build; set to _true_ to enforce publication of Build Scans to the configured Develocity URL
+    - `develocityPlugin.gradle.plugin-repository.url` - the URL of the repository to use when resolving the Develocity and CCUD plugins; required if your TeamCity agents are not able to access the Gradle Plugin Portal
     - `develocityPlugin.command-line-build-step.enabled` - enable Develocity integration for _Command Line_ build steps; by default only steps using the _Gradle_ runner are enabled
 
 ##### Example Gradle Configuration
 
-<img width="1302" alt="image" src="https://user-images.githubusercontent.com/231070/171748029-590c9f99-9382-41f3-8597-8c049ce328ed.png">
+<img width="1049" alt="image" src="https://github.com/user-attachments/assets/e6bfc90a-7391-4fb5-8536-199e23c40733" />
 
 #### Maven Builds
 
 1. In TeamCity, on the build configuration for which you want to integrate Develocity, create three configuration parameters:
 
-   - `develocityPlugin.develocity.url` - the URL of the Develocity instance to which to publish build scans
+   - `develocityPlugin.develocity.url` - the URL of the Develocity instance to which to publish Build Scans
    - `develocityPlugin.develocity.extension.version` - the version of the [Develocity Maven extension](https://docs.gradle.com/develocity/maven-extension/) to apply
    - `develocityPlugin.ccud.extension.version` - the version of the [Common Custom User Data Maven extension](https://github.com/gradle/common-custom-user-data-maven-extension) to apply (optional)
 
 2. If required, provide additional configuration parameters for your environment (optional):
 
     - `develocityPlugin.develocity.allow-untrusted-server` - allow communication with an untrusted server; set to _true_ if your Develocity instance is using a self-signed certificate
-    - `develocityPlugin.develocity.enforce-url` - enforce the configured Develocity URL over a URL configured in the project's build; set to _true_ to enforce publication of build scans to the configured Develocity URL
+    - `develocityPlugin.develocity.enforce-url` - enforce the configured Develocity URL over a URL configured in the project's build; set to _true_ to enforce publication of Build Scans to the configured Develocity URL
     - `develocityPlugin.develocity.extension.custom.coordinates` - the coordinates of a custom extension that has a transitive dependency on the Develocity Maven Extension
     - `develocityPlugin.ccud.extension.custom.coordinates` - the coordinates of a custom Common Custom User Data Maven Extension or of a custom extension that has a transitive dependency on it
     - `develocityPlugin.command-line-build-step.enabled` - enable Develocity integration for _Command Line_ build steps; by default only steps using the _Maven_ runner are enabled
 
 ##### Example Maven Configuration
 
-<img width="1298" alt="image" src="https://user-images.githubusercontent.com/231070/171748453-243aa862-c31b-4367-bb90-49b257de1f3f.png">
+<img width="1037" alt="image" src="https://github.com/user-attachments/assets/0f8c6d81-e990-44c8-934b-72210938d473" />
 
 </details>
 
@@ -138,11 +136,11 @@ The TeamCity configuration parameters can be set on any project and are automati
 
 1. In Slack, create a webhook and keep track of the created URL.
 
-2. In TeamCity, on the build configuration for which you want to be notified about published build scans, create a configuration parameter with name `develocityPlugin.slack-webhook.url` and the value being the URL of the webhook created in step #1.
+2. In TeamCity, on the build configuration for which you want to be notified about published Build Scans, create a configuration parameter with name `develocityPlugin.slack-webhook.url` and the value being the URL of the webhook created in step #1.
 
-3. Trigger your Gradle builds with build scans enabled.
+3. Trigger your Gradle builds with Build Scans enabled.
 
-4. Find a notification about the published build scans in the Slack channel configured in the webhook.
+4. Find a notification about the published Build Scans in the Slack channel configured in the webhook.
 
 # Compatibility
 
@@ -150,9 +148,9 @@ The TeamCity configuration parameters can be set on any project and are automati
 
 The version of the Develocity Gradle plugin and the Develocity Maven extension that are applied to a build must meet a minimum version requirement for the link surfacing to work.
 
-| Develocity Teamcity Plugin version | Minimum supported GE Maven extension version | Minimum supported GE Gradle plugin version |
-|------------------------------------|----------------------------------------------|--------------------------------------------|
-| Next                               | 1.11                                         | 3.0  (or Gradle Build Scan plugin 1.8)     |
+| Develocity Teamcity Plugin version | Minimum supported Develocity Maven extension version | Minimum supported Develocity Gradle plugin version |
+|------------------------------------|------------------------------------------------------|----------------------------------------------------|
+| Next                               | 1.11                                                 | 3.0  (or Gradle Build Scan plugin 1.8)             |
 
 ## Develocity connectivity
 
@@ -191,10 +189,10 @@ Both feedback and contributions are very welcome.
 + [facewindu](https://github.com/facewindu) (pr #21 that includes init script test coverage)
 + [dmitry-treskunov](https://github.com/dmitry-treskunov) (bug report and proposed fix)
 + [pbielicki](https://github.com/pbielicki) (pr #17 that adds a hint to the BuildScanServiceMessageMavenExtension @Component)
-+ [jonnybbb](https://github.com/jonnybbb) (pr #14 and #15 that store build scan links under artifacts and clean up legacy data)
++ [jonnybbb](https://github.com/jonnybbb) (pr #14 and #15 that store Build Scan links under artifacts and clean up legacy data)
 + [davidburstromspotify](https://github.com/davidburstromspotify) (bug report and proposed fix)
 + [guylabs](https://github.com/guylabs) (pr #10 that provides support for the Develocity Gradle plugin)
-+ [autonomousapps](https://github.com/autonomousapps) (pr #9 that provides build scans for Maven builds)
++ [autonomousapps](https://github.com/autonomousapps) (pr #9 that provides Build Scans for Maven builds)
 + [mark-vieira](https://github.com/mark-vieira) (pr #6 that provides message service functionality)
 + [pavelsher](https://github.com/pavelsher) (several code pointers)
 
