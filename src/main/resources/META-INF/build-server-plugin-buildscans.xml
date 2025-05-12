@@ -67,4 +67,6 @@
           class="com.gradle.develocity.teamcity.connection.DevelocityPasswordProvider">
     </bean>
 
+    <bean id="shortLivedTokenClientFactory" class="com.gradle.develocity.teamcity.token.ShortLivedTokenClientFactory" />
+
 </beans>
