@@ -43,6 +43,15 @@
 </tr>
 
 <tr>
+    <td><label for="${keys.develocityAccessTokenExpiry}">Develocity short-lived access token expiry:</label></td>
+    <td>
+        <props:textProperty name="${keys.develocityAccessTokenExpiry}" className="longField"/>
+        <span class="error" id="error_${keys.develocityAccessTokenExpiry}"></span>
+        <span class="smallNote">The short-lived access tokens expiry in hours. Defaults to 2 hours. For more information, please refer to the <a href="https://docs.gradle.com/enterprise/api-manual/#short_lived_access_tokens" target="_blank">documentation</a>.</span>
+    </td>
+</tr>
+
+<tr>
     <td><label for="${keys.enforceDevelocityUrl}">Enforce Develocity Server URL:</label></td>
     <td>
         <props:checkboxProperty name="${keys.enforceDevelocityUrl}"/>

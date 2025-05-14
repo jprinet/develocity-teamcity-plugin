@@ -71,6 +71,11 @@ public final class DevelocityConnectionProvider extends OAuthProvider {
             description += String.format("* Develocity Access Key: %s\n", "******");
         }
 
+        String accessTokenExpiry = params.get(DEVELOCITY_ACCESS_TOKEN_EXPIRY);
+        if (accessTokenExpiry != null) {
+            description += String.format("* Develocity Access Token Expiry: %s\n", accessTokenExpiry);
+        }
+
         String enforceGeUrl = params.get(ENFORCE_DEVELOCITY_URL);
         if (enforceGeUrl != null) {
             description += String.format("* Enforce Develocity Server URL: %s\n", enforceGeUrl);
@@ -164,8 +169,24 @@ public final class DevelocityConnectionProvider extends OAuthProvider {
             if (accessKey != null && !DevelocityAccessKeyValidator.isValid(accessKey)) {
                 errors.add(new InvalidProperty(DEVELOCITY_ACCESS_KEY, "Invalid access key"));
             }
+            String accessTokenExpiry = properties.get(DEVELOCITY_ACCESS_TOKEN_EXPIRY);
+            if (accessTokenExpiry != null && !isValid(accessTokenExpiry)) {
+                errors.add(new InvalidProperty(DEVELOCITY_ACCESS_TOKEN_EXPIRY, "It should be an integer between 1 and 24"));
+            }
             return errors;
         };
+    }
+
+    private static boolean isValid(String accessTokenExpiry) {
+        try {
+            if (accessTokenExpiry != null && !accessTokenExpiry.isEmpty()) {
+                int expiry = Integer.parseInt(accessTokenExpiry);
+                return expiry > 0 && expiry <= 24;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 
 }

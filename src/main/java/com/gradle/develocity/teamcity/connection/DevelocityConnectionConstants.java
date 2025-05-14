@@ -17,6 +17,7 @@ public final class DevelocityConnectionConstants {
     public static final String CUSTOM_CCUD_EXTENSION_COORDINATES = "customCommonCustomUserDataExtensionCoordinates";
     public static final String INSTRUMENT_COMMAND_LINE_BUILD_STEP = "instrumentCommandLineBuildStep";
     public static final String DEVELOCITY_ACCESS_KEY = "develocityAccessKey";
+    public static final String DEVELOCITY_ACCESS_TOKEN_EXPIRY = "develocityAccessTokenExpiry";
     public static final String ENFORCE_DEVELOCITY_URL = "enforceDevelocityUrl";
 
     // Constants defined by the BuildScanServiceMessageInjector
@@ -82,6 +83,10 @@ public final class DevelocityConnectionConstants {
 
     public String getDevelocityAccessKey() {
         return DEVELOCITY_ACCESS_KEY;
+    }
+
+    public String getDevelocityAccessTokenExpiry() {
+        return DEVELOCITY_ACCESS_TOKEN_EXPIRY;
     }
 
     public String getEnforceDevelocityUrl() {

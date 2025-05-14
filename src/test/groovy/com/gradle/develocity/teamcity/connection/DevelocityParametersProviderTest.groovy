@@ -1,5 +1,8 @@
 package com.gradle.develocity.teamcity.connection
 
+import com.gradle.develocity.teamcity.token.DevelocityAccessCredentials
+import com.gradle.develocity.teamcity.token.ShortLivedTokenClient
+import com.gradle.develocity.teamcity.token.ShortLivedTokenClientFactory
 import jetbrains.buildServer.serverSide.SBuild
 import jetbrains.buildServer.serverSide.SBuildType
 import jetbrains.buildServer.serverSide.SProject
@@ -26,7 +29,13 @@ class DevelocityParametersProviderTest extends Specification {
     SProjectFeatureDescriptor higherProjectFeatureDescriptor
 
     void setup() {
-        buildParametersProvider = new DevelocityParametersProvider()
+        def shortLivedTokenClient = Mock(ShortLivedTokenClient) {
+            get(_, _, _) >> { arguments -> Optional.of(DevelocityAccessCredentials.HostnameAccessKey.of(arguments[1].hostname, '<token>')) }
+        }
+        def shortLivedTokenClientFactory = Mock(ShortLivedTokenClientFactory) {
+            create(_) >> shortLivedTokenClient
+        }
+        buildParametersProvider = new DevelocityParametersProvider(shortLivedTokenClientFactory)
 
         descriptorParams = [(OAuthConstants.OAUTH_TYPE_PARAM): DEVELOCITY_CONNECTION_PROVIDER]
         higherDescriptorParams = [(OAuthConstants.OAUTH_TYPE_PARAM): DEVELOCITY_CONNECTION_PROVIDER]
@@ -88,20 +97,36 @@ class DevelocityParametersProviderTest extends Specification {
         parameters.get(configParam) == value
 
         where:
-        descriptorParam                    | configParam                                     | value
-        GRADLE_PLUGIN_REPOSITORY_URL       | GRADLE_PLUGIN_REPOSITORY_URL_CONFIG_PARAM       | 'https://plugins.example.com'
-        DEVELOCITY_URL | DEVELOCITY_URL_CONFIG_PARAM | 'https://develocity.example.com'
-        ALLOW_UNTRUSTED_SERVER             | ALLOW_UNTRUSTED_SERVER_CONFIG_PARAM             | 'true'
-        ENFORCE_DEVELOCITY_URL | ENFORCE_DEVELOCITY_URL_CONFIG_PARAM | 'true'
-        DEVELOCITY_PLUGIN_VERSION | DEVELOCITY_PLUGIN_VERSION_CONFIG_PARAM | '1.0.0'
-        CCUD_PLUGIN_VERSION                | CCUD_PLUGIN_VERSION_CONFIG_PARAM                | '1.0.0'
-        DEVELOCITY_EXTENSION_VERSION       | DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM | '1.0.0'
-        CCUD_EXTENSION_VERSION             | CCUD_EXTENSION_VERSION_CONFIG_PARAM             | '1.0.0'
+        descriptorParam                         | configParam                                          | value
+        GRADLE_PLUGIN_REPOSITORY_URL            | GRADLE_PLUGIN_REPOSITORY_URL_CONFIG_PARAM            | 'https://plugins.example.com'
+        DEVELOCITY_URL                          | DEVELOCITY_URL_CONFIG_PARAM                          | 'https://develocity.example.com'
+        ALLOW_UNTRUSTED_SERVER                  | ALLOW_UNTRUSTED_SERVER_CONFIG_PARAM                  | 'true'
+        ENFORCE_DEVELOCITY_URL                  | ENFORCE_DEVELOCITY_URL_CONFIG_PARAM                  | 'true'
+        DEVELOCITY_PLUGIN_VERSION               | DEVELOCITY_PLUGIN_VERSION_CONFIG_PARAM               | '1.0.0'
+        CCUD_PLUGIN_VERSION                     | CCUD_PLUGIN_VERSION_CONFIG_PARAM                     | '1.0.0'
+        DEVELOCITY_EXTENSION_VERSION            | DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM            | '1.0.0'
+        CCUD_EXTENSION_VERSION                  | CCUD_EXTENSION_VERSION_CONFIG_PARAM                  | '1.0.0'
         CUSTOM_DEVELOCITY_EXTENSION_COORDINATES | CUSTOM_DEVELOCITY_EXTENSION_COORDINATES_CONFIG_PARAM | '1.0.0'
-        CUSTOM_CCUD_EXTENSION_COORDINATES  | CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM  | '1.0.0'
-        INSTRUMENT_COMMAND_LINE_BUILD_STEP | INSTRUMENT_COMMAND_LINE_BUILD_STEP_CONFIG_PARAM | 'true'
-        DEVELOCITY_ACCESS_KEY | DEVELOCITY_ACCESS_KEY_ENV_VAR | 'develocity.example.com=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-        DEVELOCITY_ACCESS_KEY | GRADLE_ENTERPRISE_ACCESS_KEY_ENV_VAR | 'develocity.example.com=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        CUSTOM_CCUD_EXTENSION_COORDINATES       | CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM       | '1.0.0'
+        INSTRUMENT_COMMAND_LINE_BUILD_STEP      | INSTRUMENT_COMMAND_LINE_BUILD_STEP_CONFIG_PARAM      | 'true'
+    }
+
+    def "sets access key config param with short lived token"() {
+        given:
+        descriptorParams[descriptorParam] = value
+
+        when:
+        def parameters = buildParametersProvider.getParameters(sBuild, false)
+
+        then:
+        parameters.get(configParam) == expected
+
+        where:
+        descriptorParam       | configParam                          | value                                                     | expected
+        DEVELOCITY_ACCESS_KEY | DEVELOCITY_ACCESS_KEY_ENV_VAR        | 'develocity.example.com=xxx'                              | 'develocity.example.com=<token>'
+        DEVELOCITY_ACCESS_KEY | GRADLE_ENTERPRISE_ACCESS_KEY_ENV_VAR | 'develocity.example.com=xxx'                              | 'develocity.example.com=<token>'
+        DEVELOCITY_ACCESS_KEY | DEVELOCITY_ACCESS_KEY_ENV_VAR        | 'xxx'                                                     | null
+        DEVELOCITY_ACCESS_KEY | DEVELOCITY_ACCESS_KEY_ENV_VAR        | 'develocity1.example.com=xxx;develocity2.example.com=xxx' | 'develocity1.example.com=<token>;develocity2.example.com=<token>'
     }
 
     def "gets configuration from first descriptor"() {
