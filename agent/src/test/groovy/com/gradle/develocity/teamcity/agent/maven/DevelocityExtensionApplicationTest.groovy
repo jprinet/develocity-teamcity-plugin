@@ -58,6 +58,7 @@ abstract class DevelocityExtensionApplicationTest extends BaseExtensionApplicati
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityExtensionVersion: extensionVersion,
         )
@@ -89,6 +90,7 @@ abstract class DevelocityExtensionApplicationTest extends BaseExtensionApplicati
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityExtensionVersion: extensionVersion,
         )
@@ -117,6 +119,7 @@ abstract class DevelocityExtensionApplicationTest extends BaseExtensionApplicati
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityExtensionVersion: extensionVersion,
         )
@@ -153,6 +156,7 @@ abstract class DevelocityExtensionApplicationTest extends BaseExtensionApplicati
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityExtensionVersion: extensionVersion,
         )
@@ -187,6 +191,7 @@ abstract class DevelocityExtensionApplicationTest extends BaseExtensionApplicati
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityExtensionVersion: extensionVersion,
         )

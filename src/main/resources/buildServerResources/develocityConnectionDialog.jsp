@@ -52,6 +52,14 @@
 </tr>
 
 <tr>
+    <td><label for="${keys.enableInjection}">Enable Develocity auto-injection:</label></td>
+    <td>
+        <props:checkboxProperty name="${keys.enableInjection}"/>
+        <span class="smallNote">Whether to enable the Develocity auto-injection.</span>
+    </td>
+</tr>
+
+<tr>
     <td><label for="${keys.enforceDevelocityUrl}">Enforce Develocity Server URL:</label></td>
     <td>
         <props:checkboxProperty name="${keys.enforceDevelocityUrl}"/>

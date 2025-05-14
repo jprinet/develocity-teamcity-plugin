@@ -19,6 +19,7 @@ public final class DevelocityConnectionConstants {
     public static final String DEVELOCITY_ACCESS_KEY = "develocityAccessKey";
     public static final String DEVELOCITY_ACCESS_TOKEN_EXPIRY = "develocityAccessTokenExpiry";
     public static final String ENFORCE_DEVELOCITY_URL = "enforceDevelocityUrl";
+    public static final String ENABLE_INJECTION = "enableInjection";
 
     // Constants defined by the BuildScanServiceMessageInjector
     // This connection sets these values as build parameters so that they can be picked up by the BuildScanServiceMessageInjector
@@ -35,6 +36,7 @@ public final class DevelocityConnectionConstants {
     public static final String INSTRUMENT_COMMAND_LINE_BUILD_STEP_CONFIG_PARAM = "develocityPlugin.command-line-build-step.enabled";
     public static final String DEVELOCITY_ACCESS_KEY_ENV_VAR = "env.DEVELOCITY_ACCESS_KEY";
     public static final String GRADLE_ENTERPRISE_ACCESS_KEY_ENV_VAR = "env.GRADLE_ENTERPRISE_ACCESS_KEY";
+    public static final String ENABLE_INJECTION_CONFIG_PARAM = "develocityPlugin.develocity.injection.enabled";
     public static final String ENFORCE_DEVELOCITY_URL_CONFIG_PARAM = "develocityPlugin.develocity.enforce-url";
 
     public static final String DEVELOCITY_CONNECTION_PROVIDER = "develocity-connection-provider";
@@ -91,6 +93,10 @@ public final class DevelocityConnectionConstants {
 
     public String getEnforceDevelocityUrl() {
         return ENFORCE_DEVELOCITY_URL;
+    }
+
+    public String getEnableInjection() {
+        return ENABLE_INJECTION;
     }
 
 }

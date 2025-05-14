@@ -59,6 +59,7 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
     private static final String DEVELOCITY_URL_CONFIG_PARAM = "develocityPlugin.develocity.url";
     private static final String DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM = "develocityPlugin.develocity.allow-untrusted-server";
     private static final String DEVELOCITY_ENFORCE_URL_CONFIG_PARAM = "develocityPlugin.develocity.enforce-url";
+    private static final String ENABLE_INJECTION_CONFIG_PARAM = "develocityPlugin.develocity.injection.enabled";
     private static final String DEVELOCITY_PLUGIN_VERSION_CONFIG_PARAM = "develocityPlugin.develocity.plugin.version";
     private static final String CCUD_PLUGIN_VERSION_CONFIG_PARAM = "develocityPlugin.ccud.plugin.version";
     private static final String DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM = "develocityPlugin.develocity.extension.version";
@@ -107,6 +108,10 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
 
     @Override
     public void beforeRunnerStart(@NotNull BuildRunnerContext runner) {
+        if (!getBooleanConfigParam(ENABLE_INJECTION_CONFIG_PARAM, runner)) {
+            LOG.info("Develocity auto-injection is disabled");
+            return;
+        }
         if (runner.getRunType().equalsIgnoreCase(GRADLE_RUNNER)) {
             LOG.info("Attempt to instrument Gradle build with Develocity");
             instrumentGradleRunner(runner);

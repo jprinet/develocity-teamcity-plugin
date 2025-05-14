@@ -32,7 +32,11 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:

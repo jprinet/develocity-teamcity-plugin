@@ -81,6 +81,11 @@ public final class DevelocityConnectionProvider extends OAuthProvider {
             description += String.format("* Enforce Develocity Server URL: %s\n", enforceGeUrl);
         }
 
+        String enableInjection = params.get(ENABLE_INJECTION);
+        if (enableInjection != null) {
+            description += String.format("* Enable Develocity auto-injection: %s\n", enableInjection);
+        }
+
         description += "\nGradle Settings:\n";
 
         String gePluginVersion = params.get(DEVELOCITY_PLUGIN_VERSION);
