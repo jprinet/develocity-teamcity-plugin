@@ -108,10 +108,6 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
 
     @Override
     public void beforeRunnerStart(@NotNull BuildRunnerContext runner) {
-        if (!getBooleanConfigParam(ENABLE_INJECTION_CONFIG_PARAM, runner)) {
-            LOG.info("Develocity auto-injection is disabled");
-            return;
-        }
         if (runner.getRunType().equalsIgnoreCase(GRADLE_RUNNER)) {
             LOG.info("Attempt to instrument Gradle build with Develocity");
             instrumentGradleRunner(runner);
@@ -172,7 +168,7 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
 
         // the init-script is inactive by default, supply the script name env var to activate it
         addEnvVar(INIT_SCRIPT_NAME_VAR, initScript.getName(), runner);
-        addEnvVar(DEVELOCITY_INJECTION_ENABLED_VAR, "true", runner);
+        addEnvVar(DEVELOCITY_INJECTION_ENABLED_VAR, Boolean.toString(getBooleanConfigParam(ENABLE_INJECTION_CONFIG_PARAM, runner)), runner);
         addEnvVar(DEVELOCITY_INJECTION_CUSTOM_VALUE_VAR, "TeamCity", runner);
         addEnvVar(DEVELOCITY_INJECTION_DEBUG_VAR, "true", runner);
     }
@@ -234,31 +230,33 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
 
         // optionally add extensions that connect the Maven build with Develocity
         MavenExtensions extensions = getMavenExtensions(runner);
-        String develocityExtensionVersion = getOptionalConfigParam(DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM, runner);
-        if (develocityExtensionVersion != null) {
-            String develocityUrl = getOptionalConfigParam(DEVELOCITY_URL_CONFIG_PARAM, runner);
-            if (hasNoDevelocityOrGradleEnterpriseExtensionsApplied(runner, extensions)) {
-                extensionApplicationListener.develocityExtensionApplied(develocityExtensionVersion);
-                extensionJars.add(getExtensionJar(DEVELOCITY_EXT_MAVEN, runner));
-                addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, DEVELOCITY_URL_MAVEN_PROPERTY, sysProps, runner);
-                addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, DEVELOCITY_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
-                addSysProp(DEVELOCITY_EXTENSION_UPLOAD_IN_BACKGROUND_MAVEN_PROPERTY, "false", sysProps);
-            } else if (develocityUrl != null && Boolean.parseBoolean(getOptionalConfigParam(DEVELOCITY_ENFORCE_URL_CONFIG_PARAM, runner))) {
-                // set Develocity properties for extensions 1.21+
-                addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, DEVELOCITY_URL_MAVEN_PROPERTY, sysProps, runner);
-                addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, DEVELOCITY_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
-                // set GE properties for extensions 1.20.1 and below
-                addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, GRADLE_ENTERPRISE_URL_MAVEN_PROPERTY, sysProps, runner);
-                addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, GRADLE_ENTERPRISE_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
+        if (getBooleanConfigParam(ENABLE_INJECTION_CONFIG_PARAM, runner)) {
+            String develocityExtensionVersion = getOptionalConfigParam(DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM, runner);
+            if (develocityExtensionVersion != null) {
+                String develocityUrl = getOptionalConfigParam(DEVELOCITY_URL_CONFIG_PARAM, runner);
+                if (hasNoDevelocityOrGradleEnterpriseExtensionsApplied(runner, extensions)) {
+                    extensionApplicationListener.develocityExtensionApplied(develocityExtensionVersion);
+                    extensionJars.add(getExtensionJar(DEVELOCITY_EXT_MAVEN, runner));
+                    addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, DEVELOCITY_URL_MAVEN_PROPERTY, sysProps, runner);
+                    addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, DEVELOCITY_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
+                    addSysProp(DEVELOCITY_EXTENSION_UPLOAD_IN_BACKGROUND_MAVEN_PROPERTY, "false", sysProps);
+                } else if (develocityUrl != null && Boolean.parseBoolean(getOptionalConfigParam(DEVELOCITY_ENFORCE_URL_CONFIG_PARAM, runner))) {
+                    // set Develocity properties for extensions 1.21+
+                    addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, DEVELOCITY_URL_MAVEN_PROPERTY, sysProps, runner);
+                    addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, DEVELOCITY_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
+                    // set GE properties for extensions 1.20.1 and below
+                    addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, GRADLE_ENTERPRISE_URL_MAVEN_PROPERTY, sysProps, runner);
+                    addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, GRADLE_ENTERPRISE_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
+                }
             }
-        }
 
-        String ccudExtensionVersion = getOptionalConfigParam(CCUD_EXTENSION_VERSION_CONFIG_PARAM, runner);
-        if (ccudExtensionVersion != null) {
-            MavenCoordinates customCcudExtensionCoords = parseCoordinates(getOptionalConfigParam(CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM, runner));
-            if (!extensions.hasExtension(CCUD_EXTENSION_MAVEN_COORDINATES) && !extensions.hasExtension(customCcudExtensionCoords)) {
-                extensionApplicationListener.ccudExtensionApplied(ccudExtensionVersion);
-                extensionJars.add(getExtensionJar(COMMON_CUSTOM_USER_DATA_EXT_MAVEN, runner));
+            String ccudExtensionVersion = getOptionalConfigParam(CCUD_EXTENSION_VERSION_CONFIG_PARAM, runner);
+            if (ccudExtensionVersion != null) {
+                MavenCoordinates customCcudExtensionCoords = parseCoordinates(getOptionalConfigParam(CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM, runner));
+                if (!extensions.hasExtension(CCUD_EXTENSION_MAVEN_COORDINATES) && !extensions.hasExtension(customCcudExtensionCoords)) {
+                    extensionApplicationListener.ccudExtensionApplied(ccudExtensionVersion);
+                    extensionJars.add(getExtensionJar(COMMON_CUSTOM_USER_DATA_EXT_MAVEN, runner));
+                }
             }
         }
 
