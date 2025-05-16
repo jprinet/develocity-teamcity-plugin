@@ -63,6 +63,8 @@ The same auto-injection behavior is available for the [Common Custom User Data G
 
 The higher in TeamCity's project hierarchy the required configuration parameters are applied, the more widely they apply since the configuration parameters are passed on to all child projects. Child projects can override the configuration parameters of their parent projects and even disable the auto-injection by setting the `develocityPlugin.develocity.injection.enabled` parameter to `false`.
 
+If auto-injection is enabled but no Develocity Gradle plugin or Develocity Maven extension version is set, auto-injection won't be applied.
+
 For convenience, the configuration parameter values can be defined through a form describing a Develocity connection. Alternatively, the configuration parameter values can be defined as TeamCity configuration parameters.
 
 ### Configuration via TeamCity connection
