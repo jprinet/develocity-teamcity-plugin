@@ -5,6 +5,7 @@ class TcPluginConfig {
     URI gradlePluginRepositoryUrl
     URI develocityUrl
     boolean develocityAllowUntrustedServer
+    boolean enableInjection
     boolean develocityEnforceUrl
     String develocityPluginVersion
     String ccudPluginVersion
@@ -25,6 +26,9 @@ class TcPluginConfig {
         }
         if (develocityAllowUntrustedServer) {
             configProps.put 'develocityPlugin.develocity.allow-untrusted-server', 'true'
+        }
+        if (enableInjection) {
+            configProps.put 'develocityPlugin.develocity.injection.enabled', 'true'
         }
         if (develocityEnforceUrl) {
             configProps.put 'develocityPlugin.develocity.enforce-url', 'true'

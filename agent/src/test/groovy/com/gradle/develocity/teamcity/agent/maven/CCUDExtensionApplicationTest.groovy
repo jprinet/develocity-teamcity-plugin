@@ -16,6 +16,7 @@ class CCUDExtensionApplicationTest extends BaseExtensionApplicationTest {
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             ccudExtensionVersion: BaseExtensionApplicationTest.CCUD_EXTENSION_VERSION,
         )
@@ -44,6 +45,7 @@ class CCUDExtensionApplicationTest extends BaseExtensionApplicationTest {
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityExtensionVersion: BaseExtensionApplicationTest.DEVELOCITY_EXTENSION_VERSION,
             ccudExtensionVersion: BaseExtensionApplicationTest.CCUD_EXTENSION_VERSION,
@@ -76,6 +78,7 @@ class CCUDExtensionApplicationTest extends BaseExtensionApplicationTest {
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityExtensionVersion: BaseExtensionApplicationTest.DEVELOCITY_EXTENSION_VERSION,
             ccudExtensionVersion: BaseExtensionApplicationTest.CCUD_EXTENSION_VERSION,
@@ -109,6 +112,7 @@ class CCUDExtensionApplicationTest extends BaseExtensionApplicationTest {
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityExtensionVersion: BaseExtensionApplicationTest.DEVELOCITY_EXTENSION_VERSION,
             ccudExtensionVersion: BaseExtensionApplicationTest.CCUD_EXTENSION_VERSION,

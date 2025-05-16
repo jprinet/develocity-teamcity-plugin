@@ -32,7 +32,11 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -54,7 +58,11 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         declareDevelocityPluginApplication(jdkCompatibleGradleVersion.gradleVersion)
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -73,7 +81,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION, ccudPluginVersion: CCUD_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION,
+            ccudPluginVersion: CCUD_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -95,7 +108,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         declareDevelocityPluginApplication(jdkCompatibleGradleVersion.gradleVersion)
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION, ccudPluginVersion: CCUD_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION,
+            ccudPluginVersion: CCUD_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -117,7 +135,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         declareDevelocityPluginAndCcudPluginApplication(jdkCompatibleGradleVersion.gradleVersion)
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION, ccudPluginVersion: CCUD_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION,
+            ccudPluginVersion: CCUD_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -139,7 +162,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         declareDevelocityPluginApplication(jdkCompatibleGradleVersion.gradleVersion)
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: URI.create('https://ge-server.invalid'), develocityAllowUntrustedServer: true, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: URI.create('https://ge-server.invalid'),
+            develocityAllowUntrustedServer: true,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -158,7 +186,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityAllowUntrustedServer: true, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityAllowUntrustedServer: true,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -182,7 +215,13 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         declareDevelocityPluginApplication(jdkCompatibleGradleVersion.gradleVersion, URI.create('https://ge-server.invalid'))
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityAllowUntrustedServer: true, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION, develocityEnforceUrl: true)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityAllowUntrustedServer: true,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION,
+            develocityEnforceUrl: true
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -204,7 +243,13 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(gradlePluginRepositoryUrl: new URI('https://plugins.grdev.net/m2'), develocityUrl: mockScansServer.address, develocityAllowUntrustedServer: false, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            gradlePluginRepositoryUrl: new URI('https://plugins.grdev.net/m2'),
+            develocityUrl: mockScansServer.address,
+            develocityAllowUntrustedServer: false,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -221,7 +266,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION, ccudPluginVersion: '1.6.6')
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION,
+            ccudPluginVersion: '1.6.6'
+        )
         def result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
 
         then:
@@ -237,7 +287,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: URI.create('https://ge-server.invalid'), develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION, ccudPluginVersion: CCUD_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: URI.create('https://ge-server.invalid'),
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION,
+            ccudPluginVersion: CCUD_PLUGIN_VERSION
+        )
         def result = run(new BuildConfig(
             gradleVersion: jdkCompatibleGradleVersion.gradleVersion,
             tcPluginConfig: develocityPluginConfig,
@@ -259,7 +314,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION, enableCommandLineRunner: false)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION,
+            enableCommandLineRunner: false
+        )
         def result = run(new BuildConfig(
             gradleVersion: jdkCompatibleGradleVersion.gradleVersion,
             tcPluginConfig: develocityPluginConfig,
@@ -277,7 +337,12 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION, enableCommandLineRunner: true)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION,
+            enableCommandLineRunner: true
+        )
         def result = run(new BuildConfig(
             gradleVersion: jdkCompatibleGradleVersion.gradleVersion,
             tcPluginConfig: develocityPluginConfig,
@@ -299,7 +364,11 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def develocityPluginConfig = new TcPluginConfig(develocityUrl: mockScansServer.address, develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION)
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            develocityUrl: mockScansServer.address,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
+        )
         def config = new BuildConfig(
                 gradleVersion: jdkCompatibleGradleVersion.gradleVersion,
                 tcPluginConfig: develocityPluginConfig,

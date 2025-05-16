@@ -72,6 +72,7 @@ public final class DevelocityParametersProvider implements BuildParametersProvid
                 setParameter(CUSTOM_DEVELOCITY_EXTENSION_COORDINATES_CONFIG_PARAM, connectionParams.get(CUSTOM_DEVELOCITY_EXTENSION_COORDINATES), params);
                 setParameter(CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM, connectionParams.get(CUSTOM_CCUD_EXTENSION_COORDINATES), params);
                 setParameter(INSTRUMENT_COMMAND_LINE_BUILD_STEP_CONFIG_PARAM, connectionParams.get(INSTRUMENT_COMMAND_LINE_BUILD_STEP), params);
+                setParameter(ENABLE_INJECTION_CONFIG_PARAM, connectionParams.get(ENABLE_INJECTION), params);
                 setParameter(ENFORCE_DEVELOCITY_URL_CONFIG_PARAM, connectionParams.get(ENFORCE_DEVELOCITY_URL), params);
             }
             previousBuild = build;

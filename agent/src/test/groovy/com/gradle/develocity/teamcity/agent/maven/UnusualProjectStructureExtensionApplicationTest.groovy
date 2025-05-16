@@ -21,6 +21,7 @@ class UnusualProjectStructureExtensionApplicationTest extends BaseExtensionAppli
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityExtensionVersion: DEVELOCITY_EXTENSION_VERSION,
         )
 
@@ -57,6 +58,7 @@ class UnusualProjectStructureExtensionApplicationTest extends BaseExtensionAppli
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityExtensionVersion: DEVELOCITY_EXTENSION_VERSION,
         )
 
@@ -94,6 +96,7 @@ class UnusualProjectStructureExtensionApplicationTest extends BaseExtensionAppli
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityExtensionVersion: DEVELOCITY_EXTENSION_VERSION,
         )
 

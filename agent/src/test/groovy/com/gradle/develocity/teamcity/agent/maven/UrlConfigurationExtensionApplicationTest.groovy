@@ -19,6 +19,7 @@ class UrlConfigurationExtensionApplicationTest extends BaseExtensionApplicationT
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: new URI('https://dv-server.invalid'),
             develocityAllowUntrustedServer: true,
             develocityExtensionVersion: BaseExtensionApplicationTest.DEVELOCITY_EXTENSION_VERSION,
@@ -51,6 +52,7 @@ class UrlConfigurationExtensionApplicationTest extends BaseExtensionApplicationT
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityAllowUntrustedServer: true,
             develocityExtensionVersion: BaseExtensionApplicationTest.DEVELOCITY_EXTENSION_VERSION,
@@ -83,6 +85,7 @@ class UrlConfigurationExtensionApplicationTest extends BaseExtensionApplicationT
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: BaseExtensionApplicationTest.DEVELOCITY_URL,
             develocityAllowUntrustedServer: true,
             develocityEnforceUrl: true,

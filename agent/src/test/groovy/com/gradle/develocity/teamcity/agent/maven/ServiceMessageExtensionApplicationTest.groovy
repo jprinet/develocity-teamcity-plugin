@@ -16,6 +16,7 @@ class ServiceMessageExtensionApplicationTest extends BaseExtensionApplicationTes
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             enableCommandLineRunner: true,
         )
 

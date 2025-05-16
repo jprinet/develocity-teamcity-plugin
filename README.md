@@ -61,7 +61,9 @@ You can ad-hoc connect Gradle and Maven builds to an existing Develocity instanc
 
 The same auto-injection behavior is available for the [Common Custom User Data Gradle plugin](https://github.com/gradle/common-custom-user-data-gradle-plugin) and the [Common Custom User Data Maven extension](https://github.com/gradle/common-custom-user-data-maven-extension).
 
-The higher in TeamCity's project hierarchy the required configuration parameters are applied, the more widely they apply since the configuration parameters are passed on to all child projects. Child projects can override the configuration parameters of their parent projects and even disable the auto-injection by setting the appropriate configuration parameters to empty values.
+The higher in TeamCity's project hierarchy the required configuration parameters are applied, the more widely they apply since the configuration parameters are passed on to all child projects. Child projects can override the configuration parameters of their parent projects and even disable the auto-injection by setting the `develocityPlugin.develocity.injection.enabled` parameter to `false`.
+
+If auto-injection is enabled but no Develocity Gradle plugin or Develocity Maven extension version is set, auto-injection won't be applied.
 
 For convenience, the configuration parameter values can be defined through a form describing a Develocity connection. Alternatively, the configuration parameter values can be defined as TeamCity configuration parameters.
 
@@ -93,8 +95,9 @@ The TeamCity configuration parameters can be set on any project and are automati
 
 #### Gradle Builds
 
-1. In TeamCity, on the build configuration for which you want to apply Develocity, create three configuration parameters:
+1. In TeamCity, on the build configuration for which you want to apply Develocity, create those configuration parameters:
 
+   - `develocityPlugin.develocity.injection.enabled` - true to enable the injection
    - `develocityPlugin.develocity.url` - the URL of the Develocity instance to which to publish Build Scans
    - `develocityPlugin.develocity.plugin.version` - the version of the [Develocity Gradle plugin](https://docs.gradle.com/develocity/gradle-plugin/) to apply
    - `develocityPlugin.ccud.plugin.version` - the version of the [Common Custom User Data Gradle plugin](https://github.com/gradle/common-custom-user-data-gradle-plugin) to apply (optional)
@@ -112,8 +115,9 @@ The TeamCity configuration parameters can be set on any project and are automati
 
 #### Maven Builds
 
-1. In TeamCity, on the build configuration for which you want to integrate Develocity, create three configuration parameters:
+1. In TeamCity, on the build configuration for which you want to integrate Develocity, create those configuration parameters:
 
+   - `develocityPlugin.develocity.injection.enabled` - true to enable the injection
    - `develocityPlugin.develocity.url` - the URL of the Develocity instance to which to publish Build Scans
    - `develocityPlugin.develocity.extension.version` - the version of the [Develocity Maven extension](https://docs.gradle.com/develocity/maven-extension/) to apply
    - `develocityPlugin.ccud.extension.version` - the version of the [Common Custom User Data Maven extension](https://github.com/gradle/common-custom-user-data-maven-extension) to apply (optional)

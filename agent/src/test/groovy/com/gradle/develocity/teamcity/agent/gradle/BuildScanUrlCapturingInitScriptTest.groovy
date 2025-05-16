@@ -1,5 +1,7 @@
 package com.gradle.develocity.teamcity.agent.gradle
 
+import com.gradle.develocity.teamcity.agent.TcPluginConfig
+
 import static org.junit.Assume.assumeTrue
 
 class BuildScanUrlCapturingInitScriptTest extends BaseInitScriptTest {
@@ -8,7 +10,7 @@ class BuildScanUrlCapturingInitScriptTest extends BaseInitScriptTest {
         assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
 
         when:
-        def result = run(jdkCompatibleGradleVersion.gradleVersion)
+        def result = run(jdkCompatibleGradleVersion.gradleVersion, new TcPluginConfig(enableInjection: true))
 
         then:
         outputContainsTeamCityServiceMessageBuildStarted(result)
@@ -24,7 +26,7 @@ class BuildScanUrlCapturingInitScriptTest extends BaseInitScriptTest {
         declareDevelocityPluginApplication(jdkCompatibleGradleVersion.gradleVersion)
 
         when:
-        def result = run(jdkCompatibleGradleVersion.gradleVersion)
+        def result = run(jdkCompatibleGradleVersion.gradleVersion, new TcPluginConfig(enableInjection: true))
 
         then:
         outputContainsTeamCityServiceMessageBuildStarted(result)

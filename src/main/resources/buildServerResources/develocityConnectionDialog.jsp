@@ -14,7 +14,7 @@
 </tr>
 
 <tr class="groupingTitle">
-    <td colspan="2">Develocity Connection Settings</td>
+    <td colspan="2"><strong>Develocity Connection Settings</strong></td>
 </tr>
 
 <tr>
@@ -43,6 +43,12 @@
 </tr>
 
 <tr>
+    <td colspan="2">
+        <div class="smallNoteAttention">The access key must be in the <b>&lt;server host name&gt;=&lt;access key&gt;</b> format. For more details please refer to the <a href="https://docs.gradle.com/develocity/gradle-plugin/#manual_access_key_configuration" target="_blank">documentation</a>.</div>
+    </td>
+</tr>
+
+<tr>
     <td><label for="${keys.develocityAccessTokenExpiry}">Develocity short-lived access token expiry:</label></td>
     <td>
         <props:textProperty name="${keys.develocityAccessTokenExpiry}" className="longField"/>
@@ -51,17 +57,23 @@
     </td>
 </tr>
 
+<tr class="groupingTitle">
+    <td colspan="2"><strong>Develocity Injection Settings</strong></td>
+</tr>
+
+<tr>
+    <td><label for="${keys.enableInjection}">Enable Develocity auto-injection:</label></td>
+    <td>
+        <props:checkboxProperty name="${keys.enableInjection}"/>
+        <span class="smallNote">Whether to enable the Develocity auto-injection.</span>
+    </td>
+</tr>
+
 <tr>
     <td><label for="${keys.enforceDevelocityUrl}">Enforce Develocity Server URL:</label></td>
     <td>
         <props:checkboxProperty name="${keys.enforceDevelocityUrl}"/>
         <span class="smallNote">Whether to enforce the Develocity Server URL configured in this connection over a URL configured in the project's build.</span>
-    </td>
-</tr>
-
-<tr>
-    <td colspan="2">
-        <div class="smallNoteAttention">The access key must be in the <b>&lt;server host name&gt;=&lt;access key&gt;</b> format. For more details please refer to the <a href="https://docs.gradle.com/develocity/gradle-plugin/#manual_access_key_configuration" target="_blank">documentation</a>.</div>
     </td>
 </tr>
 

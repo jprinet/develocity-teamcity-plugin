@@ -21,6 +21,7 @@ class CustomCoordinatesExtensionApplicationTest extends BaseExtensionApplication
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: DEVELOCITY_URL,
             develocityExtensionVersion: DEVELOCITY_EXTENSION_VERSION,
             develocityExtensionCustomCoordinates: 'com.google.guava:guava',
@@ -55,6 +56,7 @@ class CustomCoordinatesExtensionApplicationTest extends BaseExtensionApplication
 
         and:
         def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
             develocityUrl: DEVELOCITY_URL,
             ccudExtensionVersion: CCUD_EXTENSION_VERSION,
             ccudExtensionCustomCoordinates: 'com.google.guava:guava',
