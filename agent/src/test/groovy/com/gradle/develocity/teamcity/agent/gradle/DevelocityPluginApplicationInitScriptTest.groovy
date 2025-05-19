@@ -2,6 +2,7 @@ package com.gradle.develocity.teamcity.agent.gradle
 
 import com.gradle.develocity.teamcity.agent.TcPluginConfig
 import org.gradle.testkit.runner.BuildResult
+import org.gradle.testkit.runner.UnexpectedBuildFailure
 import org.gradle.util.GradleVersion
 
 import static org.junit.Assume.assumeTrue
@@ -246,8 +247,6 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         def develocityPluginConfig = new TcPluginConfig(
             enableInjection: true,
             gradlePluginRepositoryUrl: new URI('https://plugins.grdev.net/m2'),
-            gradlePluginRepositoryUsername: 'username',
-            gradlePluginRepositoryPassword: 'password',
             develocityUrl: mockScansServer.address,
             develocityAllowUntrustedServer: false,
             develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
@@ -258,6 +257,37 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         outputContainsDevelocityPluginApplicationViaInitScript(result, jdkCompatibleGradleVersion.gradleVersion)
         outputContainsDevelocityConnectionInfo(result, mockScansServer.address.toString(), false, false)
         outputMissesCcudPluginApplicationViaInitScript(result)
+        outputContainsPluginRepositoryInfo(result, 'https://plugins.grdev.net/m2')
+
+        where:
+        jdkCompatibleGradleVersion << GRADLE_VERSIONS_3_0_AND_HIGHER
+    }
+
+    def "can configure alternative repository with credentials for plugins when Develocity plugin is applied by the init script (#jdkCompatibleGradleVersion)"() {
+        assumeTrue jdkCompatibleGradleVersion.isJvmVersionCompatible()
+
+        when:
+        def develocityPluginConfig = new TcPluginConfig(
+            enableInjection: true,
+            gradlePluginRepositoryUrl: new URI('https://plugins.grdev.net/m2'),
+            gradlePluginRepositoryUsername: 'username',
+            gradlePluginRepositoryPassword: 'password',
+            develocityUrl: mockScansServer.address,
+            develocityAllowUntrustedServer: false,
+            develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
+        )
+        def result = null
+        try {
+            result = run(jdkCompatibleGradleVersion.gradleVersion, develocityPluginConfig)
+        } catch (UnexpectedBuildFailure e) {
+            // We ignore error messages related to bad credentials
+            if (!e.message.contains('Could not resolve com.gradle:develocity-gradle-plugin')) {
+                throw e
+            }
+        }
+
+        then:
+        assert result
         outputContainsPluginRepositoryInfo(result, 'https://plugins.grdev.net/m2', true)
 
         where:
