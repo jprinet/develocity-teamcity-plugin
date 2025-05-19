@@ -1,3 +1,8 @@
+import com.github.rodm.teamcity.tasks.StartAgent
+import com.github.rodm.teamcity.tasks.StartServer
+import com.github.rodm.teamcity.tasks.StopAgent
+import com.github.rodm.teamcity.tasks.StopServer
+
 import java.text.SimpleDateFormat
 
 plugins {
@@ -85,6 +90,12 @@ teamcity {
             serverOptions '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
             agentOptions '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006'
         }
+    }
+}
+
+[ StartAgent, StartServer, StopAgent, StopServer].each {
+    tasks.withType(it).configureEach {
+        notCompatibleWithConfigurationCache('Uses project')
     }
 }
 
