@@ -246,6 +246,8 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         def develocityPluginConfig = new TcPluginConfig(
             enableInjection: true,
             gradlePluginRepositoryUrl: new URI('https://plugins.grdev.net/m2'),
+            gradlePluginRepositoryUsername: 'username',
+            gradlePluginRepositoryPassword: 'password',
             develocityUrl: mockScansServer.address,
             develocityAllowUntrustedServer: false,
             develocityPluginVersion: DEVELOCITY_PLUGIN_VERSION
@@ -256,7 +258,7 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         outputContainsDevelocityPluginApplicationViaInitScript(result, jdkCompatibleGradleVersion.gradleVersion)
         outputContainsDevelocityConnectionInfo(result, mockScansServer.address.toString(), false, false)
         outputMissesCcudPluginApplicationViaInitScript(result)
-        outputContainsPluginRepositoryInfo(result, 'https://plugins.grdev.net/m2')
+        outputContainsPluginRepositoryInfo(result, 'https://plugins.grdev.net/m2', true)
 
         where:
         jdkCompatibleGradleVersion << GRADLE_VERSIONS_3_0_AND_HIGHER
@@ -449,10 +451,18 @@ class DevelocityPluginApplicationInitScriptTest extends BaseInitScriptTest {
         assert 1 == result.output.count(geConnectionInfo)
     }
 
-    void outputContainsPluginRepositoryInfo(BuildResult result, String gradlePluginRepositoryUrl) {
+    void outputContainsPluginRepositoryInfo(
+        BuildResult result,
+        String gradlePluginRepositoryUrl,
+        boolean customCreds = false
+    ) {
         def repositoryInfo = "Develocity plugins resolution: ${gradlePluginRepositoryUrl}"
         assert result.output.contains(repositoryInfo)
         assert 1 == result.output.count(repositoryInfo)
+
+        if (customCreds) {
+            assert result.output.contains('Using credentials for plugin repository')
+        }
     }
 
     void outputEnforcesDevelocityUrl(BuildResult result, String geUrl, boolean geAllowUntrustedServer) {

@@ -71,7 +71,7 @@ abstract class BaseExtensionApplicationTest extends Specification {
         def configParameters = tcPluginConfig.toConfigParameters()
         def runnerParameters = mvnBuildStepConfig.toRunnerParameters()
 
-        def context = new TestBuildRunnerContext('Maven2', agentTempDir, configParameters, runnerParameters, ['maven': agentMavenInstallation.absolutePath], mvnBuildStepConfig.isVirtualContext)
+        def context = new TestBuildRunnerContext('Maven2', agentTempDir, configParameters, runnerParameters, [:], ['maven': agentMavenInstallation.absolutePath], mvnBuildStepConfig.isVirtualContext)
         injector.beforeRunnerStart(context)
 
         def runner = new MavenRunner(

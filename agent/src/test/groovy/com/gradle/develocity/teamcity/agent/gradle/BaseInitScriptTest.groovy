@@ -210,7 +210,9 @@ class BaseInitScriptTest extends Specification {
         File gradleUserHome = testKitRunner.testKitDirProvider.dir
         def injector = new TestBuildScanServiceMessageInjector(gradleUserHome, EventDispatcher.create(AgentLifeCycleListener.class), Mock(ExtensionApplicationListener))
 
-        TestBuildRunnerContext context = new TestBuildRunnerContext(config.runType, agentTempDir, config.tcPluginConfig.toConfigParameters(), [:])
+        def envVars = config.tcPluginConfig.toEnvVars()
+
+        TestBuildRunnerContext context = new TestBuildRunnerContext(config.runType, agentTempDir, config.tcPluginConfig.toConfigParameters(), [:], envVars)
         injector.beforeRunnerStart(context)
 
         def args = ['tasks']
@@ -266,17 +268,19 @@ class BaseInitScriptTest extends Specification {
     // for TestKit versions that don't support environment variables, map those vars to system properties
     private static List<String> mapEnvVarsToSystemProps(Map<String, String> envVars) {
         def mapping = [
-            DEVELOCITY_INJECTION_URL                      : "develocity-injection.url",
-            DEVELOCITY_INJECTION_ALLOW_UNTRUSTED_SERVER   : "develocity-injection.allow-untrusted-server",
-            DEVELOCITY_INJECTION_ENFORCE_URL              : "develocity-injection.enforce-url",
-            DEVELOCITY_INJECTION_DEVELOCITY_PLUGIN_VERSION: "develocity-injection.develocity-plugin.version",
-            DEVELOCITY_INJECTION_CCUD_PLUGIN_VERSION      : "develocity-injection.ccud-plugin.version",
-            DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_URL    : "develocity-injection.plugin-repository.url",
-            DEVELOCITY_INJECTION_INIT_SCRIPT_NAME         : "develocity-injection.init-script-name",
-            DEVELOCITY_INJECTION_ENABLED                  : "develocity-injection.enabled",
-            DEVELOCITY_INJECTION_CUSTOM_VALUE             : "develocity-injection.custom-value",
-            DEVELOCITY_INJECTION_DEBUG                    : "develocity-injection.debug",
-            DEVELOCITY_INJECTION_CAPTURE_FILE_FINGERPRINTS: "develocity-injection.capture-file-fingerprints"
+            DEVELOCITY_INJECTION_URL                       : "develocity-injection.url",
+            DEVELOCITY_INJECTION_ALLOW_UNTRUSTED_SERVER    : "develocity-injection.allow-untrusted-server",
+            DEVELOCITY_INJECTION_ENFORCE_URL               : "develocity-injection.enforce-url",
+            DEVELOCITY_INJECTION_DEVELOCITY_PLUGIN_VERSION : "develocity-injection.develocity-plugin.version",
+            DEVELOCITY_INJECTION_CCUD_PLUGIN_VERSION       : "develocity-injection.ccud-plugin.version",
+            DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_URL     : "develocity-injection.plugin-repository.url",
+            DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_USERNAME: "develocity-injection.plugin-repository.username",
+            DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_PASSWORD: "develocity-injection.plugin-repository.password",
+            DEVELOCITY_INJECTION_INIT_SCRIPT_NAME          : "develocity-injection.init-script-name",
+            DEVELOCITY_INJECTION_ENABLED                   : "develocity-injection.enabled",
+            DEVELOCITY_INJECTION_CUSTOM_VALUE              : "develocity-injection.custom-value",
+            DEVELOCITY_INJECTION_DEBUG                     : "develocity-injection.debug",
+            DEVELOCITY_INJECTION_CAPTURE_FILE_FINGERPRINTS : "develocity-injection.capture-file-fingerprints"
         ]
 
         return envVars.entrySet().stream().map(e -> {
