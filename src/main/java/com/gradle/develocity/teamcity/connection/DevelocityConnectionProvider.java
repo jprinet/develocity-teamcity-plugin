@@ -105,7 +105,7 @@ public final class DevelocityConnectionProvider extends OAuthProvider {
 
         String gradlePluginCaptureFileFingerprints = params.get(GRADLE_PLUGIN_CAPTURE_FILE_FINGERPRINTS);
         if (gradlePluginCaptureFileFingerprints != null) {
-            description += String.format("* Gradle Plugin Capture Task Input Files: %s\n", gradlePluginCaptureFileFingerprints);
+            description += String.format("* Gradle Plugin Capture File Fingerprints: %s\n", gradlePluginCaptureFileFingerprints);
         }
 
         description += "\nMaven Settings:\n";
@@ -132,7 +132,7 @@ public final class DevelocityConnectionProvider extends OAuthProvider {
 
         String extensionCaptureFileFingerprints = params.get(EXTENSION_CAPTURE_FILE_FINGERPRINTS);
         if (extensionCaptureFileFingerprints != null) {
-            description += String.format("* Extension Capture Goal Input Files: %s\n", extensionCaptureFileFingerprints);
+            description += String.format("* Extension Capture File Fingerprints: %s\n", extensionCaptureFileFingerprints);
         }
 
         description += "\nTeamCity Build Steps Settings:\n";
