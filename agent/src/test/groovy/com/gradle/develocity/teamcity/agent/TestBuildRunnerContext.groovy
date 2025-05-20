@@ -31,10 +31,19 @@ class TestBuildRunnerContext implements BuildRunnerContext {
     private final Map<String, String> toolPaths
     private final isVirtualContext
 
-    TestBuildRunnerContext(String runType, File agentTempDirectory, Map<String, String> configParameters, Map<String, String> runnerParameters, Map<String, String> toolPaths = [:], isVirtualContext = false) {
+    TestBuildRunnerContext(
+        String runType,
+        File agentTempDirectory,
+        Map<String, String> configParameters,
+        Map<String, String> runnerParameters,
+        Map<String, String> envVars = [:],
+        Map<String, String> toolPaths = [:],
+        isVirtualContext = false
+    ) {
         this.runType = runType
         this.agentRunningBuild = new TestAgentRunningBuild(agentTempDirectory)
         this.buildParameters = new TestBuildParametersMap()
+        envVars.forEach { k, v -> addEnvironmentVariable(k, v) }
         this.configParameters = configParameters
         this.runnerParameters = runnerParameters
         this.toolPaths = toolPaths

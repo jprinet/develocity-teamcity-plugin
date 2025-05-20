@@ -3,6 +3,8 @@ package com.gradle.develocity.teamcity.agent
 class TcPluginConfig {
 
     URI gradlePluginRepositoryUrl
+    String gradlePluginRepositoryUsername
+    String gradlePluginRepositoryPassword
     URI develocityUrl
     boolean develocityAllowUntrustedServer
     boolean enableInjection
@@ -60,6 +62,17 @@ class TcPluginConfig {
         configProps.put 'develocityPlugin.develocity.extension.capture-file-fingerprints', develocityExtensionFileFingerprints as String
 
         configProps
+    }
+
+    Map<String, String> toEnvVars() {
+        Map<String, String> envs = [:]
+        if (gradlePluginRepositoryUsername) {
+            envs.put 'DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_USERNAME', gradlePluginRepositoryUsername
+        }
+        if (gradlePluginRepositoryPassword) {
+            envs.put 'DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_PASSWORD', gradlePluginRepositoryPassword
+        }
+        envs
     }
 
 }
