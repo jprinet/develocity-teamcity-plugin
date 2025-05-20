@@ -67,10 +67,10 @@ class TcPluginConfig {
     Map<String, String> toEnvVars() {
         Map<String, String> envs = [:]
         if (gradlePluginRepositoryUsername) {
-            envs.put 'DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_USERNAME', gradlePluginRepositoryUsername.toString()
+            envs.put 'DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_USERNAME', gradlePluginRepositoryUsername
         }
         if (gradlePluginRepositoryPassword) {
-            envs.put 'DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_PASSWORD', gradlePluginRepositoryPassword.toString()
+            envs.put 'DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_PASSWORD', gradlePluginRepositoryPassword
         }
         envs
     }
