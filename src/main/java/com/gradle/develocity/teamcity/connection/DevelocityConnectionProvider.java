@@ -130,6 +130,11 @@ public final class DevelocityConnectionProvider extends OAuthProvider {
             description += String.format("* Common Custom User Data Maven Extension Version: %s\n", ccudExtensionVersion);
         }
 
+        String customGeExtensionRepository = params.get(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL);
+        if (customGeExtensionRepository != null) {
+            description += String.format("* Develocity Maven Extension Custom Repository: %s\n", customGeExtensionRepository);
+        }
+
         String customGeExtensionCoordinates = params.get(CUSTOM_DEVELOCITY_EXTENSION_COORDINATES);
         if (customGeExtensionCoordinates != null) {
             description += String.format("* Develocity Maven Extension Custom Coordinates: %s\n", customGeExtensionCoordinates);

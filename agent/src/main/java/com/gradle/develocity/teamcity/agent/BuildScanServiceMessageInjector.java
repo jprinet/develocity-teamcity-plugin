@@ -1,6 +1,5 @@
 package com.gradle.develocity.teamcity.agent;
 
-import com.intellij.openapi.diagnostic.Logger;
 import jetbrains.buildServer.agent.AgentLifeCycleAdapter;
 import jetbrains.buildServer.agent.AgentLifeCycleListener;
 import jetbrains.buildServer.agent.BuildAgent;
@@ -13,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +27,6 @@ import java.util.Map;
  */
 @SuppressWarnings({"SameParameterValue", "ResultOfMethodCallIgnored", "Convert2Diamond"})
 public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
-
-    private static final Logger LOG = Logger.getInstance("jetbrains.buildServer.BUILDSCAN");
 
     // TeamCity Gradle runner
 
@@ -70,6 +68,12 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
     private static final String DEVELOCITY_EXTENSION_CAPTURE_FILE_FINGERPRINTS_CONFIG_PARAM = "develocityPlugin.develocity.extension.capture-file-fingerprints";
     private static final String INSTRUMENT_COMMAND_LINE_RUNNER_CONFIG_PARAM = "develocityPlugin.command-line-build-step.enabled";
 
+    private static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL_CONFIG_PARAM = "develocityPlugin.develocity.extension.url";
+    private static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_USERNAME_CONFIG_PARAM = "develocityPlugin.develocity.extension.username";
+    private static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_PASSWORD_CONFIG_PARAM = "develocityPlugin.develocity.extension.password";
+    private static final String CUSTOM_DEVELOCITY_EXTENSION_OVERWRITE = "develocityPlugin.develocity.extension.overwrite";
+    private static final String CUSTOM_DEVELOCITY_EXTENSION_DOWNLOAD_URL = "develocityPlugin.develocity.extension.downloadUrl";
+
     // Environment variables set to instrument the Gradle build
 
     private static final String GRADLE_PLUGIN_REPOSITORY_VAR = "DEVELOCITY_INJECTION_PLUGIN_REPOSITORY_URL";
@@ -99,6 +103,10 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
     @NotNull
     private final ExtensionApplicationListener extensionApplicationListener;
 
+    private final ExtensionClient extensionClient = new ExtensionClient();
+
+    private Logger logger;
+
     public BuildScanServiceMessageInjector(@NotNull EventDispatcher<AgentLifeCycleListener> eventDispatcher,
                                            @NotNull ExtensionApplicationListener extensionApplicationListener) {
         eventDispatcher.addListener(this);
@@ -112,15 +120,17 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
 
     @Override
     public void beforeRunnerStart(@NotNull BuildRunnerContext runner) {
+        logger = new Logger(runner);
+        logger.message("Injecting build scan service");
         if (runner.getRunType().equalsIgnoreCase(GRADLE_RUNNER)) {
-            LOG.info("Attempt to instrument Gradle build with Develocity");
+            logger.message("Attempt to instrument Gradle build with Develocity");
             instrumentGradleRunner(runner);
         } else if (runner.getRunType().equalsIgnoreCase(MAVEN_RUNNER)) {
-            LOG.info("Attempt to instrument Maven build with Develocity");
+            logger.message("Attempt to instrument Maven build with Develocity");
             instrumentMavenRunner(runner);
         } else if (runner.getRunType().equalsIgnoreCase(COMMAND_LINE_RUNNER)) {
             if (getBooleanConfigParam(INSTRUMENT_COMMAND_LINE_RUNNER_CONFIG_PARAM, runner)) {
-                LOG.info("Attempt to instrument command line build with Develocity");
+                logger.message("Attempt to instrument command line build with Develocity");
                 instrumentCommandLineRunner(runner);
             }
         }
@@ -236,37 +246,72 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
         // optionally add extensions that connect the Maven build with Develocity
         MavenExtensions extensions = getMavenExtensions(runner);
         if (getBooleanConfigParam(ENABLE_INJECTION_CONFIG_PARAM, runner)) {
-            String develocityExtensionVersion = getOptionalConfigParam(DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM, runner);
-            if (develocityExtensionVersion != null) {
-                String develocityUrl = getOptionalConfigParam(DEVELOCITY_URL_CONFIG_PARAM, runner);
-                if (hasNoDevelocityOrGradleEnterpriseExtensionsApplied(runner, extensions)) {
-                    extensionApplicationListener.develocityExtensionApplied(develocityExtensionVersion);
-                    extensionJars.add(getExtensionJar(DEVELOCITY_EXT_MAVEN, runner));
-                    addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, DEVELOCITY_URL_MAVEN_PROPERTY, sysProps, runner);
-                    addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, DEVELOCITY_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
-                    addSysProp(DEVELOCITY_EXTENSION_UPLOAD_IN_BACKGROUND_MAVEN_PROPERTY, "false", sysProps);
-                    addSysProp(DEVELOCITY_CAPTURE_FILE_FINGERPRINTS_PROPERTY, Boolean.toString(getBooleanConfigParam(DEVELOCITY_EXTENSION_CAPTURE_FILE_FINGERPRINTS_CONFIG_PARAM, runner)), sysProps);
-                } else if (develocityUrl != null && Boolean.parseBoolean(getOptionalConfigParam(DEVELOCITY_ENFORCE_URL_CONFIG_PARAM, runner))) {
-                    // set Develocity properties for extensions 1.21+
-                    addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, DEVELOCITY_URL_MAVEN_PROPERTY, sysProps, runner);
-                    addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, DEVELOCITY_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
-                    // set GE properties for extensions 1.20.1 and below
-                    addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, GRADLE_ENTERPRISE_URL_MAVEN_PROPERTY, sysProps, runner);
-                    addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, GRADLE_ENTERPRISE_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
+            logger.message("Develocity injection enabled");
+            String develocityExtensionCustomCoordinates = getOptionalConfigParam(CUSTOM_DEVELOCITY_EXTENSION_COORDINATES_CONFIG_PARAM, runner);
+            if (develocityExtensionCustomCoordinates != null) {
+                logger.message("Custom Develocity extension coordinates: " + develocityExtensionCustomCoordinates);
+                Repository repository = new Repository(
+                        getOptionalConfigParam(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL_CONFIG_PARAM, runner),
+                        getOptionalConfigParam(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_USERNAME_CONFIG_PARAM, runner),
+                        getOptionalConfigParam(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_PASSWORD_CONFIG_PARAM, runner)
+                );
+                MavenCoordinates mavenCoordinates = parseCoordinates(develocityExtensionCustomCoordinates);
+                if(null != mavenCoordinates) {
+                    try {
+                        File targetLocation = new File(runner.getBuild().getAgentTempDirectory(), mavenCoordinates.getJarName());
+                        boolean overwrite = getBooleanConfigParam(CUSTOM_DEVELOCITY_EXTENSION_OVERWRITE, runner);
+                        String downloadUrl = getOptionalConfigParam(CUSTOM_DEVELOCITY_EXTENSION_DOWNLOAD_URL, runner);
+                        if(downloadUrl == null || downloadUrl.isEmpty()){
+                            downloadUrl = getDownloadUrl(repository, mavenCoordinates);
+                        }
+                        logger.message("Downloading custom Develocity extension from: " + downloadUrl);
+                        extensionClient.downloadExtension(logger, repository, downloadUrl, targetLocation, overwrite);
+                        logger.message("Custom Develocity extension downloaded to " + targetLocation.getAbsolutePath());
+                        extensionJars.add(targetLocation);
+                    } catch (IOException e) {
+                        logger.message("Error downloading custom extension: " + e.getMessage());
+                    }
                 }
-            }
+            } else {
+                String develocityExtensionVersion = getOptionalConfigParam(DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM, runner);
+                if (develocityExtensionVersion != null) {
+                    String develocityUrl = getOptionalConfigParam(DEVELOCITY_URL_CONFIG_PARAM, runner);
+                    if (hasNoDevelocityOrGradleEnterpriseExtensionsApplied(runner, extensions)) {
+                        extensionApplicationListener.develocityExtensionApplied(develocityExtensionVersion);
+                        extensionJars.add(getExtensionJar(DEVELOCITY_EXT_MAVEN, runner));
+                        addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, DEVELOCITY_URL_MAVEN_PROPERTY, sysProps, runner);
+                        addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, DEVELOCITY_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
+                        addSysProp(DEVELOCITY_EXTENSION_UPLOAD_IN_BACKGROUND_MAVEN_PROPERTY, "false", sysProps);
+                        addSysProp(DEVELOCITY_CAPTURE_FILE_FINGERPRINTS_PROPERTY, Boolean.toString(getBooleanConfigParam(DEVELOCITY_EXTENSION_CAPTURE_FILE_FINGERPRINTS_CONFIG_PARAM, runner)), sysProps);
+                    } else if (develocityUrl != null && Boolean.parseBoolean(getOptionalConfigParam(DEVELOCITY_ENFORCE_URL_CONFIG_PARAM, runner))) {
+                        // set Develocity properties for extensions 1.21+
+                        addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, DEVELOCITY_URL_MAVEN_PROPERTY, sysProps, runner);
+                        addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, DEVELOCITY_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
+                        // set GE properties for extensions 1.20.1 and below
+                        addSysPropIfSet(DEVELOCITY_URL_CONFIG_PARAM, GRADLE_ENTERPRISE_URL_MAVEN_PROPERTY, sysProps, runner);
+                        addSysPropIfSet(DEVELOCITY_ALLOW_UNTRUSTED_CONFIG_PARAM, GRADLE_ENTERPRISE_ALLOW_UNTRUSTED_MAVEN_PROPERTY, sysProps, runner);
+                    }
+                }
 
-            String ccudExtensionVersion = getOptionalConfigParam(CCUD_EXTENSION_VERSION_CONFIG_PARAM, runner);
-            if (ccudExtensionVersion != null) {
-                MavenCoordinates customCcudExtensionCoords = parseCoordinates(getOptionalConfigParam(CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM, runner));
-                if (!extensions.hasExtension(CCUD_EXTENSION_MAVEN_COORDINATES) && !extensions.hasExtension(customCcudExtensionCoords)) {
-                    extensionApplicationListener.ccudExtensionApplied(ccudExtensionVersion);
-                    extensionJars.add(getExtensionJar(COMMON_CUSTOM_USER_DATA_EXT_MAVEN, runner));
+                String ccudExtensionVersion = getOptionalConfigParam(CCUD_EXTENSION_VERSION_CONFIG_PARAM, runner);
+                if (ccudExtensionVersion != null) {
+                    MavenCoordinates customCcudExtensionCoords = parseCoordinates(getOptionalConfigParam(CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM, runner));
+                    if (!extensions.hasExtension(CCUD_EXTENSION_MAVEN_COORDINATES) && !extensions.hasExtension(customCcudExtensionCoords)) {
+                        extensionApplicationListener.ccudExtensionApplied(ccudExtensionVersion);
+                        extensionJars.add(getExtensionJar(COMMON_CUSTOM_USER_DATA_EXT_MAVEN, runner));
+                    }
                 }
             }
         }
 
         return "-Dmaven.ext.class.path=" + asClasspath(extensionJars) + " " + asArgs(sysProps);
+    }
+
+    private String getDownloadUrl(
+            Repository repository,
+            MavenCoordinates mavenCoordinates
+    ) {
+        return repository.getUrl() + "/" + mavenCoordinates.getGroupId().replace(".", "/") + "/" + mavenCoordinates.getArtifactId() + "/" + mavenCoordinates.getVersion() + "/" + mavenCoordinates.getJarName();
     }
 
     private static boolean hasNoDevelocityOrGradleEnterpriseExtensionsApplied(BuildRunnerContext runner, MavenExtensions extensions) {
@@ -287,19 +332,19 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
         String workingDirParam = getOptionalRunnerParam("teamcity.build.workingDir", runner);
         String pomLocationParam = getOptionalRunnerParam("pomLocation", runner);
 
-        LOG.info("Checkout dir: " + checkoutDirParam);
-        LOG.info("Working dir: " + workingDirParam);
-        LOG.info("POM location: " + pomLocationParam);
+        logger.message("Checkout dir: " + checkoutDirParam);
+        logger.message("Working dir: " + workingDirParam);
+        logger.message("POM location: " + pomLocationParam);
 
         // checkout dir should always be set
         if (checkoutDirParam == null) {
-            LOG.warn("Checkout dir is null: unable to determine location of .mvn/extensions.xml");
+            logger.message("Checkout dir is null: unable to determine location of .mvn/extensions.xml");
             return MavenExtensions.empty();
         }
 
         // working dir should always be set, either the working dir is set explicitly in the TC config, or it is set implicitly as the value of the checkout dir
         if (workingDirParam == null) {
-            LOG.warn("Working dir is null: unable to determine location of .mvn/extensions.xml");
+            logger.message("Working dir is null: unable to determine location of .mvn/extensions.xml");
             return MavenExtensions.empty();
         }
 
@@ -321,18 +366,18 @@ public class BuildScanServiceMessageInjector extends AgentLifeCycleAdapter {
             searchLocations.add(new File(workingDirParam));
         }
 
-        LOG.info("Searching for extensions file");
+        logger.message("Searching for extensions file");
         for (File dir : searchLocations) {
             File extensionsFile = new File(dir, ".mvn/extensions.xml");
             if (extensionsFile.exists()) {
-                LOG.info("Found extensions file: " + extensionsFile);
+                logger.message("Found extensions file: " + extensionsFile);
                 return MavenExtensions.fromFile(extensionsFile);
             } else {
-                LOG.info("Extensions file not found: " + extensionsFile);
+                logger.message("Extensions file not found: " + extensionsFile);
             }
         }
 
-        LOG.warn("Unable to find extensions file");
+        logger.message("Unable to find extensions file");
         return MavenExtensions.empty();
     }
 
