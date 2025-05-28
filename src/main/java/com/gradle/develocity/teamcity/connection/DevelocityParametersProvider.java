@@ -72,6 +72,9 @@ public final class DevelocityParametersProvider implements BuildParametersProvid
                 setParameter(CCUD_PLUGIN_VERSION_CONFIG_PARAM, connectionParams.get(CCUD_PLUGIN_VERSION), params);
                 setParameter(DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM, connectionParams.get(DEVELOCITY_EXTENSION_VERSION), params);
                 setParameter(CCUD_EXTENSION_VERSION_CONFIG_PARAM, connectionParams.get(CCUD_EXTENSION_VERSION), params);
+                setParameter(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL_CONFIG_PARAM, connectionParams.get(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL), params);
+                setParameter(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_USERNAME_CONFIG_PARAM, connectionParams.get(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_USERNAME), params);
+                setParameter(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_PASSWORD_CONFIG_PARAM, connectionParams.get(CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_PASSWORD), params);
                 setParameter(CUSTOM_DEVELOCITY_EXTENSION_COORDINATES_CONFIG_PARAM, connectionParams.get(CUSTOM_DEVELOCITY_EXTENSION_COORDINATES), params);
                 setParameter(CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM, connectionParams.get(CUSTOM_CCUD_EXTENSION_COORDINATES), params);
                 setParameter(DEVELOCITY_EXTENSION_CAPTURE_FILE_FINGERPRINTS_CONFIG_PARAM, connectionParams.get(EXTENSION_CAPTURE_FILE_FINGERPRINTS), params);

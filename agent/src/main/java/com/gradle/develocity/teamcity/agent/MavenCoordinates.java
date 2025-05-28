@@ -12,7 +12,7 @@ final class MavenCoordinates {
     private final String version;
 
     MavenCoordinates(String groupId, String artifactId) {
-        this(groupId, artifactId, "unspecified");
+        this(groupId, artifactId, "[RELEASE]");
     }
 
     MavenCoordinates(String groupId, String artifactId, String version) {
@@ -31,6 +31,10 @@ final class MavenCoordinates {
 
     String getVersion() {
         return version;
+    }
+
+    String getJarName() {
+        return artifactId + "-" + version + ".jar";
     }
 
     @Override

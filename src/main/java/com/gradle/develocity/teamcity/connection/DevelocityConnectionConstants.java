@@ -16,6 +16,9 @@ public final class DevelocityConnectionConstants {
     public static final String CCUD_PLUGIN_VERSION = "commonCustomUserDataPluginVersion";
     public static final String DEVELOCITY_EXTENSION_VERSION = "develocityExtensionVersion";
     public static final String CCUD_EXTENSION_VERSION = "commonCustomUserDataExtensionVersion";
+    public static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL = "mavenRepositoryUrl";
+    public static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_USERNAME = "mavenRepositoryUsername";
+    public static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_PASSWORD = "mavenRepositoryPassword";
     public static final String CUSTOM_DEVELOCITY_EXTENSION_COORDINATES = "customDevelocityExtensionCoordinates";
     public static final String CUSTOM_CCUD_EXTENSION_COORDINATES = "customCommonCustomUserDataExtensionCoordinates";
     public static final String EXTENSION_CAPTURE_FILE_FINGERPRINTS = "extensionCaptureFileFingerprints";
@@ -38,6 +41,9 @@ public final class DevelocityConnectionConstants {
     public static final String CCUD_PLUGIN_VERSION_CONFIG_PARAM = "develocityPlugin.ccud.plugin.version";
     public static final String DEVELOCITY_EXTENSION_VERSION_CONFIG_PARAM = "develocityPlugin.develocity.extension.version";
     public static final String CCUD_EXTENSION_VERSION_CONFIG_PARAM = "develocityPlugin.ccud.extension.version";
+    public static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL_CONFIG_PARAM = "develocityPlugin.develocity.extension.url";
+    public static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_USERNAME_CONFIG_PARAM = "develocityPlugin.develocity.extension.username";
+    public static final String CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_PASSWORD_CONFIG_PARAM = "develocityPlugin.develocity.extension.password";
     public static final String CUSTOM_DEVELOCITY_EXTENSION_COORDINATES_CONFIG_PARAM = "develocityPlugin.develocity.extension.custom.coordinates";
     public static final String CUSTOM_CCUD_EXTENSION_COORDINATES_CONFIG_PARAM = "develocityPlugin.ccud.extension.custom.coordinates";
     public static final String DEVELOCITY_EXTENSION_CAPTURE_FILE_FINGERPRINTS_CONFIG_PARAM = "develocityPlugin.develocity.extension.capture-file-fingerprints";
@@ -89,6 +95,30 @@ public final class DevelocityConnectionConstants {
 
     public String getCommonCustomUserDataExtensionVersion() {
         return CCUD_EXTENSION_VERSION;
+    }
+
+    public String getCustomDevelocityExtensionRepositoryUrl() {
+        return CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL;
+    }
+
+    public String getCustomDevelocityExtensionRepositoryUsername() {
+        return CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_USERNAME;
+    }
+
+    public String getCustomDevelocityExtensionRepositoryPassword() {
+        return CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_PASSWORD;
+    }
+
+    public String getMavenRepositoryUrl() {
+        return CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_URL;
+    }
+
+    public String getMavenRepositoryUsername() {
+        return CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_USERNAME;
+    }
+
+    public String getMavenRepositoryPassword() {
+        return CUSTOM_DEVELOCITY_EXTENSION_REPOSITORY_PASSWORD;
     }
 
     public String getCustomDevelocityExtensionCoordinates() {
